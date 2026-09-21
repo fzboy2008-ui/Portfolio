@@ -1,5 +1,5 @@
-/* Deep Midnight Dark Blue Gradient Background */
-.galaxy-bg {
+/* Deep Galaxy Navy Background */
+.galaxy-universe {
   background: radial-gradient(ellipse at bottom, #071739 0%, #030a1c 50%, #01040a 100%);
   background-attachment: fixed;
 }
@@ -12,60 +12,68 @@
   text-shadow: 0 0 35px rgba(56, 189, 248, 0.4);
 }
 
-/* Glowing Animated Border Card */
-.glow-border-card {
+/* Running Neon Glowing Outline Cards */
+.neon-outline-box {
   position: relative;
-  background: rgba(5, 14, 30, 0.75);
+  background: rgba(4, 12, 28, 0.8);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-radius: 1.5rem;
   border: 1px solid transparent;
   background-clip: padding-box;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-.glow-border-card::before {
+.neon-outline-box::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: -1.5px;
   border-radius: inherit;
-  background: linear-gradient(90deg, #0284c7, #38bdf8, #4f46e5, #0284c7);
+  background: linear-gradient(90deg, #06b6d4, #3b82f6, #6366f1, #06b6d4);
   background-size: 300% 300%;
   z-index: -1;
-  animation: rotateBorder 6s linear infinite;
-  opacity: 0.55;
+  animation: neonBorderFlow 5s linear infinite;
+  opacity: 0.65;
   transition: opacity 0.3s ease;
 }
 
-.glow-border-card:hover {
+.neon-outline-box:hover {
   transform: translateY(-4px);
-  box-shadow: 0 15px 35px -5px rgba(2, 132, 199, 0.35);
+  box-shadow: 0 16px 40px -5px rgba(6, 182, 212, 0.35);
 }
 
-.glow-border-card:hover::before {
+.neon-outline-box:hover::before {
   opacity: 1;
 }
 
-@keyframes rotateBorder {
+@keyframes neonBorderFlow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-/* Neon Ring Around Profile Avatar */
-.neon-ring-wrapper {
+/* Rotating Neon Halo on Avatar */
+.neon-avatar-ring {
   position: relative;
   width: 100%;
   height: 100%;
   border-radius: 9999px;
-  padding: 3px;
+  padding: 3.5px;
   background: linear-gradient(135deg, #00f0ff, #0051ff, #bd00ff, #00f0ff);
   background-size: 300% 300%;
-  animation: rotateBorder 4s linear infinite;
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.55);
+  animation: neonBorderFlow 3.5s linear infinite;
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
 }
 
-/* Blinking Cursor for Typing */
+/* Glass Navbar */
+.nav-glass-bar {
+  background: rgba(4, 12, 28, 0.75);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Typing cursor blink */
 .cursor-blink {
   display: inline-block;
   color: #38bdf8;
