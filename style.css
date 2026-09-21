@@ -1,38 +1,59 @@
-/* Deep Blue Animated Base */
-@keyframes orbMove1 {
-  0%, 100% { transform: translate(0px, 0px) scale(1); }
-  50% { transform: translate(45px, -55px) scale(1.1); }
-}
-
-@keyframes orbMove2 {
-  0%, 100% { transform: translate(0px, 0px) scale(1); }
-  50% { transform: translate(-50px, 50px) scale(0.95); }
-}
-
-@keyframes orbMove3 {
-  0%, 100% { transform: translate(0px, 0px) scale(1); }
-  50% { transform: translate(40px, 35px) scale(1.05); }
-}
-
+/* Deep Cyber-Blue Space Background */
 .bg-animated {
-  background: radial-gradient(circle at 10% 10%, #0d1b2a 0%, #07111e 45%, #020617 100%);
+  background: radial-gradient(circle at 50% 10%, #081b33 0%, #040d1a 45%, #020610 100%);
   background-attachment: fixed;
 }
 
-.orb-1 { animation: orbMove1 16s ease-in-out infinite; }
-.orb-2 { animation: orbMove2 20s ease-in-out infinite; }
-.orb-3 { animation: orbMove3 18s ease-in-out infinite; }
-
-/* Ultra Glassmorphism */
+/* 3D Glassmorphism Cards */
 .glass-card {
-  background: rgba(13, 27, 42, 0.72);
+  background: rgba(8, 20, 36, 0.65);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(59, 130, 246, 0.22);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease-out;
+  transform-style: preserve-3d;
 }
 
 .glass-card:hover {
-  border-color: rgba(96, 165, 250, 0.45);
-  box-shadow: 0 14px 40px -10px rgba(37, 99, 235, 0.35);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 16px 40px -10px rgba(14, 165, 233, 0.35), inset 0 0 15px rgba(56, 189, 248, 0.08);
+}
+
+/* Pulsing Avatar Glow */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.5), 0 0 40px rgba(37, 99, 235, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.8), 0 0 65px rgba(37, 99, 235, 0.5);
+  }
+}
+
+.neon-avatar {
+  animation: neonPulse 3s infinite alternate ease-in-out;
+}
+
+/* Blinking Cursor for Typing Effect */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  background-color: #38bdf8;
+  margin-left: 4px;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Smooth Floating Drift */
+@keyframes softFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+.floating-elem {
+  animation: softFloat 4.5s ease-in-out infinite;
 }
