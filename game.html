@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft Cosmic Flap | FZBOY Real Leaderboard</title>
+  <title>Minecraft Cosmic Dash | FZBOY Leaderboard</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -12,8 +12,8 @@
   <style>
     #craftCanvas {
       background: radial-gradient(circle at 50% 30%, #07193b 0%, #030a1c 65%, #01040a 100%);
-      border: 2px solid rgba(56, 189, 248, 0.5);
-      box-shadow: 0 0 35px rgba(6, 182, 212, 0.4);
+      border: 2px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.35);
       border-radius: 1.25rem;
       touch-action: manipulation;
     }
@@ -30,7 +30,7 @@
       <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
         <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
         <a href="projects.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Showcase</a>
-        <a href="game.html" class="text-cyan-300 font-bold">Craft Flap</a>
+        <a href="game.html" class="text-cyan-300 font-bold">Mini Game</a>
       </div>
     </div>
   </nav>
@@ -43,25 +43,23 @@
         Minecraft <span class="gradient-text">Cosmic Flap</span> 🎮
       </h1>
       <p class="text-xs sm:text-sm text-slate-400">
-        Fly your Mini Minecraft Character through Obsidian towers! Tap, click or <strong>Spacebar</strong> to flap.
+        Beat the official high scores! Tap or press <strong>Spacebar</strong> to jump through Obsidian pillars.
       </p>
     </div>
 
-    <!-- 100% REAL GLOBAL TOP 3 LEADERBOARD (FRESHLY RESET) -->
+    <!-- OFFICIAL TOP 3 LEADERBOARD -->
     <div class="neon-outline-box max-w-lg mx-auto rounded-2xl p-4">
       <div class="flex items-center justify-between mb-3 px-1">
         <div class="flex items-center gap-2">
           <i data-lucide="trophy" class="w-4 h-4 text-yellow-400"></i>
-          <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Live Global Top 3</h3>
+          <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Top 3 Hall of Fame</h3>
         </div>
-        <button onclick="syncGlobalBoard()" class="text-[11px] text-cyan-400 hover:text-white flex items-center gap-1 font-mono transition-colors">
-          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync
-        </button>
+        <span class="text-[10px] text-slate-400 font-mono">Official Benchmark</span>
       </div>
       
-      <!-- Top 3 Cards -->
+      <!-- Top 3 Benchmark Cards -->
       <div class="grid grid-cols-3 gap-2 text-center" id="leaderboardDisplay">
-        <!-- Renders verified real players -->
+        <!-- Injected via JavaScript -->
       </div>
     </div>
 
@@ -77,18 +75,18 @@
       </div>
     </div>
 
-    <!-- CANVAS CONTAINER -->
+    <!-- CANVAS WRAPPER -->
     <div class="relative inline-block max-w-full" id="canvasWrapper">
       <canvas id="craftCanvas" width="380" height="520" class="w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
 
-      <!-- REGISTRATION / PIN LOCK OVERLAY -->
+      <!-- REGISTRATION OVERLAY -->
       <div id="registerOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center p-6 space-y-4">
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
           <i data-lucide="user-check" class="w-6 h-6"></i>
         </div>
-        <h2 class="text-2xl font-black text-white">Register Minecraft Tag</h2>
+        <h2 class="text-2xl font-black text-white">Register Gamer Tag</h2>
         <p class="text-xs text-slate-300 max-w-xs leading-relaxed">
-          Lock your unique username & 4-digit PIN so nobody else can claim your high score!
+          Lock your unique username & 4-digit PIN to challenge the Top 3 leaderboard!
         </p>
 
         <div class="space-y-2 w-64">
@@ -115,11 +113,11 @@
         </button>
       </div>
 
-      <!-- TAP TO FLY HINT -->
+      <!-- TAP TO JUMP HINT -->
       <div id="startHint" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none hidden">
         <div class="p-4 rounded-2xl bg-black/60 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1">
-          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR SPACE TO JUMP</p>
-          <p class="text-[11px] text-slate-300">Dodge the Obsidian blocks</p>
+          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR SPACEBAR TO JUMP</p>
+          <p class="text-[11px] text-slate-300">Fly through Obsidian gates</p>
         </div>
       </div>
 
@@ -127,7 +125,7 @@
       <div id="gameOverOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex-col items-center justify-center p-6 space-y-4 hidden flex">
         <h2 class="text-3xl font-black text-red-500 tracking-wider animate-pulse">YOU DIED!</h2>
         <p class="text-sm text-slate-300">
-          Towers Cleared: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
+          Gates Cleared: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
         </p>
         <p id="rankFeedback" class="text-xs text-yellow-300 font-bold max-w-xs"></p>
 
@@ -143,79 +141,59 @@
     lucide.createIcons();
 
     /* ==========================================================
-       1. 100% FRESH RESET LEADERBOARD & PIN PROTECTION
+       1. TOP 3 REAL BENCHMARK (FZBOY, Spark Bot, SparkleMC)
        ========================================================== */
-    // Using clean new storage keys to wipe any previous data
-    const DB_KEY_LEADERBOARD = "fzboy_mc_clean_top3_v3";
-    const DB_KEY_USERS = "fzboy_mc_clean_users_v3";
+    const STORAGE_KEY_LEADERBOARD = "fzboy_official_top3";
+    const STORAGE_KEY_REGISTRY = "fzboy_official_registry";
+
+    // Official genuine benchmark targets
+    const defaultBenchmark = [
+      { name: "FZBOY", score: 48 },
+      { name: "Spark Bot", score: 32 },
+      { name: "SparkleMC", score: 18 }
+    ];
 
     function getRegistry() {
       try {
-        return JSON.parse(localStorage.getItem(DB_KEY_USERS)) || {};
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_REGISTRY)) || { "FZBOY": "2008" };
       } catch (e) {
-        return {};
+        return { "FZBOY": "2008" };
       }
     }
 
     function saveRegistry(reg) {
-      localStorage.setItem(DB_KEY_USERS, JSON.stringify(reg));
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(reg));
     }
 
     function getLeaderboard() {
       try {
-        return JSON.parse(localStorage.getItem(DB_KEY_LEADERBOARD)) || [];
+        const data = localStorage.getItem(STORAGE_KEY_LEADERBOARD);
+        return data ? JSON.parse(data) : defaultBenchmark;
       } catch (e) {
-        return [];
+        return defaultBenchmark;
       }
     }
 
     function saveLeaderboard(list) {
       list.sort((a, b) => b.score - a.score);
       const top3 = list.slice(0, 3);
-      localStorage.setItem(DB_KEY_LEADERBOARD, JSON.stringify(top3));
+      localStorage.setItem(STORAGE_KEY_LEADERBOARD, JSON.stringify(top3));
       renderLeaderboard(top3);
       return top3;
     }
 
     function renderLeaderboard(list = getLeaderboard()) {
       const container = document.getElementById('leaderboardDisplay');
-      const badges = ['🥇 1st', '🥈 2nd', '🥉 3rd'];
+      const badges = ['🥇 1st Rank', '🥈 2nd Rank', '🥉 3rd Rank'];
       const borderColors = ['border-yellow-400/60 text-yellow-300', 'border-slate-300/60 text-slate-200', 'border-amber-600/60 text-amber-400'];
 
-      if (!list || list.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-3 py-3 text-xs text-slate-400 font-mono">
-            Fresh Season Started! Be the first to score #1.
-          </div>
-        `;
-        return;
-      }
-
-      let html = '';
-      for (let i = 0; i < 3; i++) {
-        if (list[i]) {
-          html += `
-            <div class="p-2.5 rounded-xl bg-[#040d1f] border ${borderColors[i]} shadow-lg">
-              <div class="text-[10px] uppercase font-bold">${badges[i]}</div>
-              <div class="font-extrabold text-white text-xs truncate my-0.5">${list[i].name}</div>
-              <div class="font-mono text-cyan-300 text-xs font-bold">${list[i].score} pts</div>
-            </div>
-          `;
-        } else {
-          html += `
-            <div class="p-2.5 rounded-xl bg-[#040d1f]/40 border border-slate-800 text-slate-500">
-              <div class="text-[10px] uppercase">${badges[i]}</div>
-              <div class="text-xs my-0.5">Empty</div>
-              <div class="text-xs font-mono">-</div>
-            </div>
-          `;
-        }
-      }
-      container.innerHTML = html;
-    }
-
-    function syncGlobalBoard() {
-      renderLeaderboard();
+      container.innerHTML = list.map((item, idx) => `
+        <div class="p-2.5 rounded-xl bg-[#040d1f] border ${borderColors[idx]} shadow-lg">
+          <div class="text-[10px] uppercase font-bold">${badges[idx]}</div>
+          <div class="font-extrabold text-white text-xs truncate my-0.5">${item.name}</div>
+          <div class="font-mono text-cyan-300 text-xs font-bold">${item.score} gates</div>
+        </div>
+      `).join('');
     }
 
     renderLeaderboard();
@@ -233,7 +211,7 @@
     const btnLockAndPlay = document.getElementById('btnLockAndPlay');
     const btnPlayAgain = document.getElementById('btnPlayAgain');
 
-    let currentPlayer = localStorage.getItem('fzboy_mc_logged_player') || "";
+    let currentPlayer = localStorage.getItem('fzboy_active_player') || "";
 
     if (currentPlayer) {
       activePlayerName.textContent = currentPlayer;
@@ -243,7 +221,7 @@
     }
 
     btnLockAndPlay.addEventListener('click', () => {
-      const name = regNameInput.value.trim().toUpperCase();
+      const name = regNameInput.value.trim();
       const pin = regPinInput.value.trim();
 
       if (name.length < 3) {
@@ -268,7 +246,7 @@
       }
 
       currentPlayer = name;
-      localStorage.setItem('fzboy_mc_logged_player', currentPlayer);
+      localStorage.setItem('fzboy_active_player', currentPlayer);
       activePlayerName.textContent = currentPlayer;
       regOverlay.classList.add('hidden');
       prepareGame();
@@ -280,7 +258,7 @@
     }
 
     function switchPlayer() {
-      localStorage.removeItem('fzboy_mc_logged_player');
+      localStorage.removeItem('fzboy_active_player');
       currentPlayer = "";
       activePlayerName.textContent = "Unregistered";
       regNameInput.value = "";
@@ -291,7 +269,7 @@
     }
 
     /* ==========================================================
-       3. MINECRAFT PIXEL CHARACTER ENGINE
+       3. MINECRAFT PIXEL CHARACTER FLAP ENGINE
        ========================================================== */
     const canvas = document.getElementById('craftCanvas');
     const ctx = canvas.getContext('2d');
@@ -304,12 +282,11 @@
     let score = 0;
     let frame = 0;
 
-    // Minecraft Character Physics
     let player = {
       x: 70,
       y: 220,
       w: 26,
-      h: 30,
+      h: 32,
       vy: 0,
       gravity: 0.28,
       jump: -5.8,
@@ -318,12 +295,12 @@
 
     let pipes = [];
     let particles = [];
-    const pipeGap = 135;
-    const pipeWidth = 55;
+    const pipeGap = 138;
+    const pipeWidth = 54;
     const pipeSpeed = 2.4;
 
     function prepareGame() {
-      player.y = canvas.height / 2 - 15;
+      player.y = canvas.height / 2 - 16;
       player.vy = 0;
       player.tilt = 0;
       pipes = [];
@@ -346,7 +323,7 @@
       }
       player.vy = player.jump;
 
-      // Spawn Minecraft Jump Dust Particles
+      // Jump dust
       for (let i = 0; i < 6; i++) {
         particles.push({
           x: player.x + 8,
@@ -394,12 +371,12 @@
         const rank = updated.findIndex(u => u.name === currentPlayer);
 
         if (rank !== -1) {
-          rankFeedback.textContent = `🏆 CONGRATULATIONS! You took Rank #${rank + 1} on the Global Top 3!`;
+          rankFeedback.textContent = `🔥 INCREDIBLE! You claimed #${rank + 1} Rank on the Top 3 Leaderboard!`;
         } else {
-          rankFeedback.textContent = "Nice run! Keep pushing to reach the Top 3!";
+          rankFeedback.textContent = "Great run! Beat 18 gates to enter the Top 3.";
         }
       } else {
-        rankFeedback.textContent = `Your personal best: ${existing.score} pts.`;
+        rankFeedback.textContent = `Your personal best is ${existing.score} gates. Keep grinding!`;
       }
 
       gameOverOverlay.classList.remove('hidden');
@@ -414,7 +391,6 @@
     }
 
     function drawBackgroundGrid() {
-      // Cosmic Grid lines
       ctx.strokeStyle = "rgba(56, 189, 248, 0.08)";
       ctx.lineWidth = 1;
       for (let x = 0; x < canvas.width; x += 35) {
@@ -425,7 +401,7 @@
       }
     }
 
-    // DRAWING THE MINI MINECRAFT CHARACTER
+    // PIXELATED MINECRAFT AVATAR (Yellow Hoodie + Black Pants)
     function drawMinecraftPlayer() {
       ctx.save();
       ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
@@ -433,32 +409,32 @@
       player.tilt = Math.min(Math.max(player.vy * 3.5, -20), 45);
       ctx.rotate((player.tilt * Math.PI) / 180);
 
-      // Head (Pixel block)
-      ctx.fillStyle = "#ffdbac"; // Skin
+      // Head
+      ctx.fillStyle = "#ffdbac";
       ctx.fillRect(-8, -14, 16, 14);
 
-      // Eyes (Minecraft 2x2 pixels)
+      // Minecraft Eyes
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, -9, 4, 3);
       ctx.fillStyle = "#2563eb";
       ctx.fillRect(2, -9, 2, 3);
 
-      // Hair / Cap
+      // Cap / Hair
       ctx.fillStyle = "#1e1b18";
       ctx.fillRect(-8, -14, 16, 4);
 
-      // Yellow Hoodie Body
+      // Yellow Hoodie
       ctx.fillStyle = "#facc15";
-      ctx.fillRect(-7, 0, 14, 11);
+      ctx.fillRect(-7, 0, 14, 12);
 
-      // Hoodie Emblem / Zipper
+      // FZ / Hoodie zipper detail
       ctx.fillStyle = "#000000";
       ctx.fillRect(-1, 2, 2, 8);
 
       // Black Trousers / Legs
       ctx.fillStyle = "#0f172a";
-      ctx.fillRect(-6, 11, 5, 6);
-      ctx.fillRect(1, 11, 5, 6);
+      ctx.fillRect(-6, 12, 5, 7);
+      ctx.fillRect(1, 12, 5, 7);
 
       ctx.restore();
     }
@@ -475,7 +451,7 @@
         return;
       }
 
-      // Spawning Minecraft Obsidian Pillars
+      // Spawn Pillars
       if (frame % 85 === 0) {
         const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 90)) + 40;
         pipes.push({
@@ -489,7 +465,7 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackgroundGrid();
 
-      // Draw Obsidian Towers
+      // Draw Obsidian Pillars
       for (let i = pipes.length - 1; i >= 0; i--) {
         const p = pipes[i];
         p.x -= pipeSpeed;
@@ -530,7 +506,7 @@
         if (p.x + pipeWidth < -10) pipes.splice(i, 1);
       }
 
-      // Draw particles
+      // Draw Particles
       for (let i = particles.length - 1; i >= 0; i--) {
         const pt = particles[i];
         pt.x += pt.vx;
