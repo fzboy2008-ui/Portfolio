@@ -3,101 +3,399 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projects & Ecosystem | FZBOY</title>
+  <title>AI Tech Core & Systems Showcase | FZBOY</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
-</head>
-<body class="galaxy-universe text-slate-100 min-h-screen relative overflow-x-hidden font-sans">
+  
+  <style>
+    /* High-tech Hologram Scanline Effect */
+    .hologram-hud {
+      position: relative;
+      overflow: hidden;
+    }
+    .hologram-hud::after {
+      content: " ";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.9), transparent);
+      box-shadow: 0 0 15px #06b6d4;
+      animation: scanline 3.2s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes scanline {
+      0% { top: -5%; }
+      100% { top: 105%; }
+    }
 
-  <!-- Canvas -->
-  <canvas id="galaxyCanvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
+    /* AI Audio Waveform Bars */
+    @keyframes soundWave {
+      0%, 100% { height: 6px; }
+      50% { height: 28px; }
+    }
+    .wave-bar {
+      width: 4px;
+      border-radius: 9999px;
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+      animation: soundWave 1.2s ease-in-out infinite alternate;
+    }
+  </style>
+</head>
+<body class="galaxy-universe text-slate-100 min-h-screen relative overflow-x-hidden font-sans selection:bg-cyan-500 selection:text-black">
+
+  <!-- Interactive 3D AI Neural Matrix Canvas -->
+  <canvas id="neuralCanvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
 
   <!-- NAVBAR -->
-  <nav class="max-w-4xl mx-auto px-4 pt-6">
+  <nav class="max-w-5xl mx-auto px-4 pt-6">
     <div class="nav-glass-bar flex items-center justify-between px-6 py-3.5 rounded-2xl">
       <a href="index.html" class="flex items-center gap-2 font-black tracking-wider text-xl">
         <span class="gradient-text">FZBOY</span>
+        <span class="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-mono">v4.0 AI</span>
       </a>
       <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
         <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
         <a href="projects.html" class="text-cyan-300 font-bold">Showcase</a>
-        <a href="game.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Mini Game</a>
+        <a href="game.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Flappy Bird</a>
       </div>
     </div>
   </nav>
 
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-10">
-    <div class="text-center space-y-2">
-      <h1 class="text-4xl font-extrabold text-white">
-        Project <span class="gradient-text">Ecosystem</span>
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+    
+    <!-- AI COMMAND CENTER HEADER -->
+    <header class="text-center space-y-3 relative">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#05142f] border border-cyan-400/40 text-cyan-300 font-mono text-xs shadow-[0_0_20px_rgba(6,182,212,0.3)] animate-pulse">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <span>AI NEURAL ENGINE • QUANTUM OPERATING MODE</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight">
+        Next-Gen <span class="gradient-text">AI Architecture</span>
       </h1>
-      <p class="text-sm text-slate-400 max-w-lg mx-auto">
-        Full technical breakdown of current servers, automation utilities, and live networks created and operated by FZBOY.
+      <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+        Real-time telemetry, neural network automation, and high-performance server clusters engineered and deployed by <strong class="text-white">FZBOY</strong>.
       </p>
-    </div>
+    </header>
 
-    <!-- SPARK BOT DEEP DIVE -->
-    <div class="neon-outline-box rounded-3xl p-8 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-        <div>
-          <span class="text-xs uppercase font-extrabold text-cyan-400 tracking-wider">Discord Innovation</span>
-          <h2 class="text-3xl font-black text-white mt-1">Spark Bot</h2>
+    <!-- LIVE QUANTUM AI CORE & AUDIO TELEMETRY -->
+    <section class="neon-outline-box hologram-hud rounded-3xl p-6 sm:p-8 space-y-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-slate-800 pb-6">
+        
+        <!-- Left: System Identity -->
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-2xl bg-cyan-500/10 border border-cyan-400/50 flex items-center justify-center text-cyan-400 shadow-[0_0_30px_rgba(6,182,212,0.4)]">
+            <i data-lucide="cpu" class="w-8 h-8 animate-spin" style="animation-duration: 15s;"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl font-black text-white tracking-wide flex items-center gap-2">
+              Neural Hologram Core
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">ONLINE</span>
+            </h2>
+            <p class="text-xs text-slate-400">Autonomous Server Guard & Bot Telemetry</p>
+          </div>
         </div>
-        <a href="https://discord.com/oauth2/authorize?client_id=1539868740768763975" target="_blank" rel="noopener noreferrer" 
-           class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(37,99,235,0.4)] self-start sm:self-auto">
-          Add to Discord
-        </a>
+
+        <!-- Right: Animated Sound Waveform Visualizer -->
+        <div class="flex items-center gap-1.5 h-10 px-4 py-2 rounded-xl bg-[#030919] border border-cyan-500/30">
+          <span class="text-xs font-mono text-cyan-400 mr-2">AUDIO-STREAM</span>
+          <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.4s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.6s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.5s;"></div>
+          <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
-          <strong class="text-cyan-300 block text-sm mb-1">Advanced Protection</strong>
-          Automated raid protection, link filtering, and custom timeout triggers.
+      <!-- CENTER VISUAL: 3D HOLOGRAPHIC SPHERE + LIVE CODE MATRIX -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        
+        <!-- 3D Rotating Holographic Sphere Canvas -->
+        <div class="lg:col-span-5 flex flex-col items-center justify-center p-4 relative">
+          <canvas id="quantumSphereCanvas" width="280" height="280" class="block mx-auto"></canvas>
+          <div class="text-center mt-2">
+            <span class="text-xs font-mono text-cyan-300 tracking-widest uppercase">Autonomous AI Brain</span>
+            <p class="text-[11px] text-slate-400">Rendering 3D Quantum Nodes in Real-Time</p>
+          </div>
         </div>
-        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
-          <strong class="text-cyan-300 block text-sm mb-1">Economy Engine</strong>
-          Gambling games, daily rewards, customizable currency, and shop integrations.
-        </div>
-        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
-          <strong class="text-cyan-300 block text-sm mb-1">24/7 Hosting</strong>
-          Engineered for minimal latency, high-throughput commands, and 99.9% uptime.
-        </div>
-      </div>
-    </div>
 
-    <!-- SPARKLEMC MINECRAFT DEEP DIVE -->
-    <div class="neon-outline-box rounded-3xl p-8 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
-        <div>
-          <span class="text-xs uppercase font-extrabold text-blue-400 tracking-wider">Minecraft Network</span>
-          <h2 class="text-3xl font-black text-white mt-1">SparkleMC SMP</h2>
+        <!-- Real-Time Terminal Log Stream -->
+        <div class="lg:col-span-7 bg-[#020612] border border-cyan-500/30 rounded-2xl p-4 font-mono text-xs shadow-inner space-y-2 h-72 overflow-y-hidden relative">
+          <div class="flex items-center justify-between text-[11px] text-slate-400 border-b border-slate-800 pb-2">
+            <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span> TELEMETRY TERMINAL</span>
+            <span class="text-cyan-400">NODE: FZBOY-CORE-01</span>
+          </div>
+          
+          <div id="terminalStream" class="space-y-1.5 text-slate-300 pt-1">
+            <!-- Dynamic Telemetry Injected via JS -->
+          </div>
+          
+          <!-- Terminal Bottom Gradient Overlay -->
+          <div class="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-[#020612] to-transparent pointer-events-none"></div>
         </div>
-        <a href="https://www.sparklemc.fun" target="_blank" rel="noopener noreferrer" 
-           class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(79,70,229,0.4)] self-start sm:self-auto">
-          Visit sparklemc.fun
-        </a>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE AI COMMAND SIMULATOR -->
+    <section class="neon-outline-box rounded-3xl p-6 sm:p-8 space-y-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/40 flex items-center justify-center text-purple-400">
+            <i data-lucide="terminal" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Interactive AI Command Sandbox</h3>
+            <p class="text-xs text-slate-400">Execute commands directly on FZBOY systems</p>
+          </div>
+        </div>
+        <span class="text-[10px] uppercase font-mono px-3 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">Interactive</span>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
-          <strong class="text-indigo-300 block text-sm mb-1">Cross-Play Ready</strong>
-          Play simultaneously from Java Edition (PC) or Bedrock Edition (Android/iOS/Console).
-        </div>
-        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
-          <strong class="text-indigo-300 block text-sm mb-1">Custom Features</strong>
-          Player auctions, land claims, rank ladders, and balanced PvP protection.
-        </div>
-        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
-          <strong class="text-indigo-300 block text-sm mb-1">Live Connection</strong>
-          Direct link: <code class="text-cyan-300">play.sparklemc.fun:19133</code>
-        </div>
+      <!-- Command Trigger Buttons -->
+      <div class="flex flex-wrap gap-2.5">
+        <button onclick="runCommand('status')" class="px-4 py-2 rounded-xl bg-[#07173a] hover:bg-[#0b2459] border border-cyan-400/40 text-cyan-300 text-xs font-mono font-bold transition-all hover:scale-105">
+          $ check_status
+        </button>
+        <button onclick="runCommand('bot')" class="px-4 py-2 rounded-xl bg-[#07173a] hover:bg-[#0b2459] border border-blue-400/40 text-blue-300 text-xs font-mono font-bold transition-all hover:scale-105">
+          $ query_spark_bot
+        </button>
+        <button onclick="runCommand('mc')" class="px-4 py-2 rounded-xl bg-[#07173a] hover:bg-[#0b2459] border border-indigo-400/40 text-indigo-300 text-xs font-mono font-bold transition-all hover:scale-105">
+          $ ping_sparklemc
+        </button>
+        <button onclick="runCommand('ai_matrix')" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-400/60 text-white text-xs font-mono font-bold transition-all hover:scale-105">
+          $ trigger_neural_burst
+        </button>
       </div>
-    </div>
+
+      <!-- Output Console Box -->
+      <div class="p-4 rounded-2xl bg-[#020714] border border-cyan-500/30 font-mono text-xs text-cyan-300 min-h-[90px] flex items-center shadow-inner">
+        <p id="commandOutput">Select any command above to execute system protocol...</p>
+      </div>
+    </section>
+
+    <!-- LIVE INFRASTRUCTURE METRICS -->
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      
+      <!-- Card 1 -->
+      <div class="neon-outline-box rounded-2xl p-6 text-center space-y-2">
+        <div class="text-3xl font-black text-cyan-300 font-mono" id="statPing">14 ms</div>
+        <h4 class="text-xs uppercase font-bold text-slate-300 tracking-wider">SparkleMC Latency</h4>
+        <p class="text-[11px] text-slate-500 font-mono">Ultra-low packet loss buffer</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="neon-outline-box rounded-2xl p-6 text-center space-y-2">
+        <div class="text-3xl font-black text-blue-400 font-mono">99.98%</div>
+        <h4 class="text-xs uppercase font-bold text-slate-300 tracking-wider">Spark Bot Uptime</h4>
+        <p class="text-[11px] text-slate-500 font-mono">Continuous 24/7 Cluster</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="neon-outline-box rounded-2xl p-6 text-center space-y-2">
+        <div class="text-3xl font-black text-indigo-300 font-mono">SHA-256</div>
+        <h4 class="text-xs uppercase font-bold text-slate-300 tracking-wider">Neural Data Security</h4>
+        <p class="text-[11px] text-slate-500 font-mono">Raid & DDoS Protected</p>
+      </div>
+
+    </section>
 
   </main>
 
-  <script src="script.js"></script>
+  <script>
+    lucide.createIcons();
+
+    /* ==========================================================
+       1. INTERACTIVE 3D NEURAL MATRIX BACKGROUND CANVAS
+       ========================================================== */
+    const nCanvas = document.getElementById('neuralCanvas');
+    const nCtx = nCanvas.getContext('2d');
+
+    let nw = (nCanvas.width = window.innerWidth);
+    let nh = (nCanvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      nw = nCanvas.width = window.innerWidth;
+      nh = nCanvas.height = window.innerHeight;
+    });
+
+    const nodes = [];
+    const nodeCount = Math.min(Math.floor(window.innerWidth / 15), 65);
+
+    for (let i = 0; i < nodeCount; i++) {
+      nodes.push({
+        x: Math.random() * nw,
+        y: Math.random() * nh,
+        vx: (Math.random() - 0.5) * 0.7,
+        vy: (Math.random() - 0.5) * 0.7,
+        radius: Math.random() * 2 + 1,
+        color: Math.random() > 0.5 ? '#06b6d4' : '#6366f1'
+      });
+    }
+
+    function renderNeuralMatrix() {
+      nCtx.clearRect(0, 0, nw, nh);
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+
+        if (n.x < 0 || n.x > nw) n.vx *= -1;
+        if (n.y < 0 || n.y > nh) n.vy *= -1;
+
+        nCtx.beginPath();
+        nCtx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        nCtx.fillStyle = n.color;
+        nCtx.shadowBlur = 10;
+        nCtx.shadowColor = n.color;
+        nCtx.fill();
+
+        // Connect synapses
+        for (let j = i + 1; j < nodes.length; j++) {
+          const n2 = nodes[j];
+          const dist = Math.hypot(n.x - n2.x, n.y - n2.y);
+          if (dist < 130) {
+            nCtx.beginPath();
+            nCtx.moveTo(n.x, n.y);
+            nCtx.lineTo(n2.x, n2.y);
+            nCtx.strokeStyle = `rgba(6, 182, 212, ${0.35 * (1 - dist / 130)})`;
+            nCtx.lineWidth = 0.8;
+            nCtx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(renderNeuralMatrix);
+    }
+    renderNeuralMatrix();
+
+    /* ==========================================================
+       2. 3D HOLOGRAPHIC SPHERE (QUANTUM AI BRAIN)
+       ========================================================== */
+    const qCanvas = document.getElementById('quantumSphereCanvas');
+    const qCtx = qCanvas.getContext('2d');
+    const sphereRadius = 100;
+    const spherePoints = [];
+    const numPoints = 180;
+
+    for (let i = 0; i < numPoints; i++) {
+      const theta = Math.acos(2 * Math.random() - 1);
+      const phi = 2 * Math.PI * Math.random();
+      spherePoints.push({
+        x: sphereRadius * Math.sin(theta) * Math.cos(phi),
+        y: sphereRadius * Math.sin(theta) * Math.sin(phi),
+        z: sphereRadius * Math.cos(theta)
+      });
+    }
+
+    let angleX = 0.005;
+    let angleY = 0.008;
+
+    function renderQuantumSphere() {
+      qCtx.clearRect(0, 0, qCanvas.width, qCanvas.height);
+      const cx = qCanvas.width / 2;
+      const cy = qCanvas.height / 2;
+
+      for (let p of spherePoints) {
+        // Rotate Y
+        let cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+        let x1 = p.x * cosY - p.z * sinY;
+        let z1 = p.z * cosY + p.x * sinY;
+
+        // Rotate X
+        let cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+        let y1 = p.y * cosX - z1 * sinX;
+        let z2 = z1 * cosX + p.y * sinX;
+
+        p.x = x1;
+        p.y = y1;
+        p.z = z2;
+
+        const fov = 220;
+        const scale = fov / (fov + z2);
+        const px = x1 * scale + cx;
+        const py = y1 * scale + cy;
+        const alpha = Math.max((z2 + sphereRadius) / (2 * sphereRadius), 0.15);
+
+        qCtx.beginPath();
+        qCtx.arc(px, py, 1.8 * scale, 0, Math.PI * 2);
+        qCtx.fillStyle = `rgba(56, 189, 248, ${alpha})`;
+        qCtx.shadowBlur = 10;
+        qCtx.shadowColor = "#38bdf8";
+        qCtx.fill();
+      }
+
+      requestAnimationFrame(renderQuantumSphere);
+    }
+    renderQuantumSphere();
+
+    /* ==========================================================
+       3. TERMINAL STREAM GENERATOR
+       ========================================================== */
+    const terminalStream = document.getElementById('terminalStream');
+    const logPool = [
+      "[OK] SparkBot AI-Router synched with discord.gateway.v10",
+      "[LIVE] SparkleMC Bedrock proxy connected at port :19133",
+      "[INFO] Neural anomaly filter: 0 threats detected",
+      "[METRIC] Shard #0 latency: 11ms • Packet loss: 0.00%",
+      "[AI] Context memory allocated: 1024 MB buffer ready",
+      "[SEC] SSL Handshake verified: sparklemc.fun (2048-bit)",
+      "[AUTO] Quantum load balancer scaling nodes dynamically"
+    ];
+
+    let logIndex = 0;
+    setInterval(() => {
+      const p = document.createElement('p');
+      p.className = "text-slate-300 flex items-center gap-2";
+      p.innerHTML = `<span class="text-cyan-400">&gt;</span> <span>${logPool[logIndex % logPool.length]}</span>`;
+      terminalStream.appendChild(p);
+
+      if (terminalStream.children.length > 9) {
+        terminalStream.removeChild(terminalStream.children[0]);
+      }
+      logIndex++;
+    }, 1800);
+
+    /* ==========================================================
+       4. INTERACTIVE COMMAND SANDBOX
+       ========================================================== */
+    const cmdOutput = document.getElementById('commandOutput');
+
+    function runCommand(type) {
+      cmdOutput.innerHTML = `<span class="text-yellow-400">Executing command... Please hold.</span>`;
+
+      setTimeout(() => {
+        if (type === 'status') {
+          cmdOutput.innerHTML = `
+            <span class="text-green-400">✔ SYSTEM HEALTH: OPTIMAL</span><br>
+            • SparkleMC Server: ONLINE (play.sparklemc.fun:19133)<br>
+            • Spark Bot: OPERATIONAL (CEO: FZBOY)
+          `;
+        } else if (type === 'bot') {
+          cmdOutput.innerHTML = `
+            <span class="text-cyan-300">✔ SPARK BOT QUERY:</span><br>
+            • Modules: Auto-Mod, Economy, Leveling, Music<br>
+            • Client ID: 1539868740768763975 [AUTHENTICATED]
+          `;
+        } else if (type === 'mc') {
+          cmdOutput.innerHTML = `
+            <span class="text-blue-400">✔ MINECRAFT CLUSTER:</span><br>
+            • Network IP: play.sparklemc.fun<br>
+            • Bedrock Port: 19133 | Crossplay Protocol: ACTIVE
+          `;
+        } else if (type === 'ai_matrix') {
+          cmdOutput.innerHTML = `
+            <span class="text-purple-400 animate-pulse">⚡ NEURAL BURST EMITTED!</span><br>
+            Synapse re-routing complete. All 65 quantum nodes firing at 100% capacity.
+          `;
+        }
+      }, 350);
+    }
+  </script>
 </body>
 </html>
