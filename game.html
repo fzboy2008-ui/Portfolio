@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Minecraft Cosmic Dash | FZBOY Leaderboard</title>
+  <title>Flappy Bird | FZBOY Arcade</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
   
   <style>
-    #craftCanvas {
-      background: radial-gradient(circle at 50% 30%, #07193b 0%, #030a1c 65%, #01040a 100%);
-      border: 2px solid rgba(56, 189, 248, 0.4);
+    #flappyCanvas {
+      background: radial-gradient(circle at 50% 35%, #0c234b 0%, #040e21 65%, #010612 100%);
+      border: 2px solid rgba(56, 189, 248, 0.45);
       box-shadow: 0 0 35px rgba(6, 182, 212, 0.35);
       border-radius: 1.25rem;
       touch-action: manipulation;
@@ -30,7 +30,7 @@
       <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
         <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
         <a href="projects.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Showcase</a>
-        <a href="game.html" class="text-cyan-300 font-bold">Mini Game</a>
+        <a href="game.html" class="text-cyan-300 font-bold">Flappy Bird</a>
       </div>
     </div>
   </nav>
@@ -40,97 +40,52 @@
     <!-- TITLE -->
     <div class="space-y-1">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
-        Minecraft <span class="gradient-text">Cosmic Flap</span> 🎮
+        Cosmic <span class="gradient-text">Flappy Bird</span> 🐦
       </h1>
       <p class="text-xs sm:text-sm text-slate-400">
-        Beat the official high scores! Tap or press <strong>Spacebar</strong> to jump through Obsidian pillars.
+        Tap, click, or press <strong>Spacebar</strong> to fly! Dodge the cyber pillars.
       </p>
     </div>
 
-    <!-- OFFICIAL TOP 3 LEADERBOARD -->
-    <div class="neon-outline-box max-w-lg mx-auto rounded-2xl p-4">
-      <div class="flex items-center justify-between mb-3 px-1">
-        <div class="flex items-center gap-2">
-          <i data-lucide="trophy" class="w-4 h-4 text-yellow-400"></i>
-          <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Top 3 Hall of Fame</h3>
-        </div>
-        <span class="text-[10px] text-slate-400 font-mono">Official Benchmark</span>
+    <!-- SCOREBOARD (CURRENT SCORE & PERSONAL BEST) -->
+    <div class="flex items-center justify-center gap-5 text-sm font-mono">
+      <div class="px-5 py-2 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300">
+        SCORE: <span id="currentScore" class="font-bold text-white text-lg ml-1">0</span>
       </div>
-      
-      <!-- Top 3 Benchmark Cards -->
-      <div class="grid grid-cols-3 gap-2 text-center" id="leaderboardDisplay">
-        <!-- Injected via JavaScript -->
-      </div>
-    </div>
-
-    <!-- CURRENT PLAYER STATUS -->
-    <div class="flex items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm font-mono">
-      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300 flex items-center gap-2">
-        <span>Gamer:</span>
-        <strong id="activePlayerName" class="text-white">Unregistered</strong>
-        <button onclick="switchPlayer()" class="text-[10px] text-blue-400 hover:underline ml-1">(Change)</button>
-      </div>
-      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-blue-500/40 text-cyan-300">
-        Score: <span id="gameScore" class="font-bold text-white text-base">0</span>
+      <div class="px-5 py-2 rounded-xl bg-[#06142e] border border-yellow-500/40 text-yellow-300 flex items-center gap-1.5">
+        <i data-lucide="crown" class="w-4 h-4 text-yellow-400"></i>
+        <span>BEST:</span>
+        <strong id="highScore" class="font-bold text-white text-lg ml-1">0</strong>
       </div>
     </div>
 
     <!-- CANVAS WRAPPER -->
     <div class="relative inline-block max-w-full" id="canvasWrapper">
-      <canvas id="craftCanvas" width="380" height="520" class="w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
+      <canvas id="flappyCanvas" width="380" height="520" class="w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
 
-      <!-- REGISTRATION OVERLAY -->
-      <div id="registerOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center p-6 space-y-4">
-        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-          <i data-lucide="user-check" class="w-6 h-6"></i>
-        </div>
-        <h2 class="text-2xl font-black text-white">Register Gamer Tag</h2>
-        <p class="text-xs text-slate-300 max-w-xs leading-relaxed">
-          Lock your unique username & 4-digit PIN to challenge the Top 3 leaderboard!
-        </p>
-
-        <div class="space-y-2 w-64">
-          <input 
-            type="text" 
-            id="regName" 
-            maxlength="12"
-            placeholder="Username (e.g. FZBOY)" 
-            class="w-full px-4 py-2 rounded-xl bg-[#081836] border border-cyan-400/50 text-white placeholder-slate-500 text-center font-mono text-sm focus:outline-none focus:border-cyan-300"
-          />
-          <input 
-            type="password" 
-            id="regPin" 
-            maxlength="4"
-            placeholder="4-Digit Security PIN" 
-            class="w-full px-4 py-2 rounded-xl bg-[#081836] border border-cyan-400/50 text-white placeholder-slate-500 text-center font-mono text-sm focus:outline-none focus:border-cyan-300"
-          />
-        </div>
-
-        <p id="regError" class="text-[11px] text-red-400 font-medium hidden"></p>
-
-        <button id="btnLockAndPlay" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
-          Lock Tag & Play
-        </button>
-      </div>
-
-      <!-- TAP TO JUMP HINT -->
-      <div id="startHint" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none hidden">
-        <div class="p-4 rounded-2xl bg-black/60 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1">
-          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR SPACEBAR TO JUMP</p>
-          <p class="text-[11px] text-slate-300">Fly through Obsidian gates</p>
+      <!-- TAP TO START HINT -->
+      <div id="startHint" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        <div class="p-4 rounded-2xl bg-black/65 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1.5 shadow-xl">
+          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR PRESS SPACEBAR</p>
+          <p class="text-xs text-slate-300">Fly bird through the gates</p>
         </div>
       </div>
 
       <!-- GAME OVER OVERLAY -->
-      <div id="gameOverOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex-col items-center justify-center p-6 space-y-4 hidden flex">
-        <h2 class="text-3xl font-black text-red-500 tracking-wider animate-pulse">YOU DIED!</h2>
-        <p class="text-sm text-slate-300">
-          Gates Cleared: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
-        </p>
-        <p id="rankFeedback" class="text-xs text-yellow-300 font-bold max-w-xs"></p>
+      <div id="gameOverOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-md rounded-2xl flex-col items-center justify-center p-6 space-y-4 hidden flex">
+        <h2 class="text-3xl font-black text-red-500 tracking-wider animate-pulse">GAME OVER</h2>
+        
+        <div class="space-y-1">
+          <p class="text-sm text-slate-300">
+            Score: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
+          </p>
+          <p class="text-xs text-yellow-300 font-mono">
+            Best Record: <span id="finalHighScore">0</span>
+          </p>
+        </div>
 
-        <button id="btnPlayAgain" class="px-8 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95 transition-all">
-          Respawn & Fly
+        <button id="btnPlayAgain" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
+          Play Again
         </button>
       </div>
     </div>
@@ -141,176 +96,57 @@
     lucide.createIcons();
 
     /* ==========================================================
-       1. TOP 3 REAL BENCHMARK (FZBOY, Spark Bot, SparkleMC)
+       FLAPPY BIRD ENGINE (CLASSIC BIRD & PERSONAL HIGH SCORE)
        ========================================================== */
-    const STORAGE_KEY_LEADERBOARD = "fzboy_official_top3";
-    const STORAGE_KEY_REGISTRY = "fzboy_official_registry";
-
-    // Official genuine benchmark targets
-    const defaultBenchmark = [
-      { name: "FZBOY", score: 48 },
-      { name: "Spark Bot", score: 32 },
-      { name: "SparkleMC", score: 18 }
-    ];
-
-    function getRegistry() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY_REGISTRY)) || { "FZBOY": "2008" };
-      } catch (e) {
-        return { "FZBOY": "2008" };
-      }
-    }
-
-    function saveRegistry(reg) {
-      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(reg));
-    }
-
-    function getLeaderboard() {
-      try {
-        const data = localStorage.getItem(STORAGE_KEY_LEADERBOARD);
-        return data ? JSON.parse(data) : defaultBenchmark;
-      } catch (e) {
-        return defaultBenchmark;
-      }
-    }
-
-    function saveLeaderboard(list) {
-      list.sort((a, b) => b.score - a.score);
-      const top3 = list.slice(0, 3);
-      localStorage.setItem(STORAGE_KEY_LEADERBOARD, JSON.stringify(top3));
-      renderLeaderboard(top3);
-      return top3;
-    }
-
-    function renderLeaderboard(list = getLeaderboard()) {
-      const container = document.getElementById('leaderboardDisplay');
-      const badges = ['🥇 1st Rank', '🥈 2nd Rank', '🥉 3rd Rank'];
-      const borderColors = ['border-yellow-400/60 text-yellow-300', 'border-slate-300/60 text-slate-200', 'border-amber-600/60 text-amber-400'];
-
-      container.innerHTML = list.map((item, idx) => `
-        <div class="p-2.5 rounded-xl bg-[#040d1f] border ${borderColors[idx]} shadow-lg">
-          <div class="text-[10px] uppercase font-bold">${badges[idx]}</div>
-          <div class="font-extrabold text-white text-xs truncate my-0.5">${item.name}</div>
-          <div class="font-mono text-cyan-300 text-xs font-bold">${item.score} gates</div>
-        </div>
-      `).join('');
-    }
-
-    renderLeaderboard();
-
-    /* ==========================================================
-       2. USER VERIFICATION & PIN LOCK
-       ========================================================== */
-    const regOverlay = document.getElementById('registerOverlay');
-    const gameOverOverlay = document.getElementById('gameOverOverlay');
+    const canvas = document.getElementById('flappyCanvas');
+    const ctx = canvas.getContext('2d');
+    const currentScoreEl = document.getElementById('currentScore');
+    const highScoreEl = document.getElementById('highScore');
+    const finalScoreEl = document.getElementById('finalScore');
+    const finalHighScoreEl = document.getElementById('finalHighScore');
     const startHint = document.getElementById('startHint');
-    const regNameInput = document.getElementById('regName');
-    const regPinInput = document.getElementById('regPin');
-    const regError = document.getElementById('regError');
-    const activePlayerName = document.getElementById('activePlayerName');
-    const btnLockAndPlay = document.getElementById('btnLockAndPlay');
+    const gameOverOverlay = document.getElementById('gameOverOverlay');
     const btnPlayAgain = document.getElementById('btnPlayAgain');
 
-    let currentPlayer = localStorage.getItem('fzboy_active_player') || "";
-
-    if (currentPlayer) {
-      activePlayerName.textContent = currentPlayer;
-      regOverlay.classList.add('hidden');
-    } else {
-      regOverlay.classList.remove('hidden');
-    }
-
-    btnLockAndPlay.addEventListener('click', () => {
-      const name = regNameInput.value.trim();
-      const pin = regPinInput.value.trim();
-
-      if (name.length < 3) {
-        showError("Tag must be at least 3 letters!");
-        return;
-      }
-      if (pin.length !== 4 || isNaN(pin)) {
-        showError("Enter a valid 4-digit PIN!");
-        return;
-      }
-
-      const registry = getRegistry();
-
-      if (registry[name]) {
-        if (registry[name] !== pin) {
-          showError(`"${name}" is locked by its original creator! Wrong PIN.`);
-          return;
-        }
-      } else {
-        registry[name] = pin;
-        saveRegistry(registry);
-      }
-
-      currentPlayer = name;
-      localStorage.setItem('fzboy_active_player', currentPlayer);
-      activePlayerName.textContent = currentPlayer;
-      regOverlay.classList.add('hidden');
-      prepareGame();
-    });
-
-    function showError(msg) {
-      regError.textContent = msg;
-      regError.classList.remove('hidden');
-    }
-
-    function switchPlayer() {
-      localStorage.removeItem('fzboy_active_player');
-      currentPlayer = "";
-      activePlayerName.textContent = "Unregistered";
-      regNameInput.value = "";
-      regPinInput.value = "";
-      regError.classList.add('hidden');
-      gameOverOverlay.classList.add('hidden');
-      regOverlay.classList.remove('hidden');
-    }
-
-    /* ==========================================================
-       3. MINECRAFT PIXEL CHARACTER FLAP ENGINE
-       ========================================================== */
-    const canvas = document.getElementById('craftCanvas');
-    const ctx = canvas.getContext('2d');
-    const scoreEl = document.getElementById('gameScore');
-    const finalScoreEl = document.getElementById('finalScore');
-    const rankFeedback = document.getElementById('rankFeedback');
+    // Personal High Score from Local Storage
+    let highScore = parseInt(localStorage.getItem('fzboy_flappy_personal_best') || '0', 10);
+    highScoreEl.textContent = highScore;
 
     let isPlaying = false;
     let waitingToFlap = true;
     let score = 0;
     let frame = 0;
 
-    let player = {
+    // Bird Object
+    let bird = {
       x: 70,
       y: 220,
-      w: 26,
-      h: 32,
+      radius: 13,
       vy: 0,
       gravity: 0.28,
       jump: -5.8,
-      tilt: 0
+      wingAnim: 0
     };
 
     let pipes = [];
     let particles = [];
-    const pipeGap = 138;
-    const pipeWidth = 54;
+    const pipeGap = 140;
+    const pipeWidth = 52;
     const pipeSpeed = 2.4;
 
-    function prepareGame() {
-      player.y = canvas.height / 2 - 16;
-      player.vy = 0;
-      player.tilt = 0;
+    function resetGame() {
+      bird.y = canvas.height / 2 - 10;
+      bird.vy = 0;
+      bird.wingAnim = 0;
       pipes = [];
       particles = [];
       score = 0;
       frame = 0;
-      scoreEl.textContent = '0';
+      currentScoreEl.textContent = '0';
       waitingToFlap = true;
       isPlaying = true;
       startHint.classList.remove('hidden');
+      gameOverOverlay.classList.add('hidden');
       drawIdle();
     }
 
@@ -321,25 +157,25 @@
         startHint.classList.add('hidden');
         loop();
       }
-      player.vy = player.jump;
+      bird.vy = bird.jump;
 
-      // Jump dust
-      for (let i = 0; i < 6; i++) {
+      // Small feathers / wind dust particles
+      for (let i = 0; i < 5; i++) {
         particles.push({
-          x: player.x + 8,
-          y: player.y + player.h,
+          x: bird.x - 8,
+          y: bird.y,
           vx: -(Math.random() * 2 + 1),
-          vy: Math.random() * 2,
+          vy: (Math.random() - 0.5) * 2,
           life: 1,
-          size: Math.random() * 3 + 2,
-          color: Math.random() > 0.5 ? "#facc15" : "#38bdf8"
+          size: Math.random() * 2.5 + 1.5,
+          color: Math.random() > 0.4 ? "#facc15" : "#38bdf8"
         });
       }
     }
 
+    // Input Events
     window.addEventListener('keydown', e => {
       if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
-        if (!regOverlay.classList.contains('hidden')) return;
         flap();
         e.preventDefault();
       }
@@ -352,32 +188,20 @@
     });
 
     btnPlayAgain.addEventListener('click', () => {
-      gameOverOverlay.classList.add('hidden');
-      prepareGame();
+      resetGame();
     });
 
     function triggerCrash() {
       isPlaying = false;
       finalScoreEl.textContent = score;
 
-      const list = getLeaderboard();
-      const existing = list.find(u => u.name === currentPlayer);
-
-      if (!existing || score > existing.score) {
-        if (existing) existing.score = score;
-        else list.push({ name: currentPlayer, score: score });
-
-        const updated = saveLeaderboard(list);
-        const rank = updated.findIndex(u => u.name === currentPlayer);
-
-        if (rank !== -1) {
-          rankFeedback.textContent = `🔥 INCREDIBLE! You claimed #${rank + 1} Rank on the Top 3 Leaderboard!`;
-        } else {
-          rankFeedback.textContent = "Great run! Beat 18 gates to enter the Top 3.";
-        }
-      } else {
-        rankFeedback.textContent = `Your personal best is ${existing.score} gates. Keep grinding!`;
+      // Update Personal Best
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('fzboy_flappy_personal_best', highScore);
+        highScoreEl.textContent = highScore;
       }
+      finalHighScoreEl.textContent = highScore;
 
       gameOverOverlay.classList.remove('hidden');
     }
@@ -386,7 +210,7 @@
       if (!waitingToFlap) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackgroundGrid();
-      drawMinecraftPlayer();
+      drawBird();
       requestAnimationFrame(drawIdle);
     }
 
@@ -401,40 +225,56 @@
       }
     }
 
-    // PIXELATED MINECRAFT AVATAR (Yellow Hoodie + Black Pants)
-    function drawMinecraftPlayer() {
+    // DRAW ANIMATED FLAPPY BIRD 🐦
+    function drawBird() {
       ctx.save();
-      ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
+      ctx.translate(bird.x, bird.y);
 
-      player.tilt = Math.min(Math.max(player.vy * 3.5, -20), 45);
-      ctx.rotate((player.tilt * Math.PI) / 180);
+      // Smooth tilt rotation based on vertical speed
+      const tilt = Math.min(Math.max(bird.vy * 3.5, -25), 60);
+      ctx.rotate((tilt * Math.PI) / 180);
 
-      // Head
-      ctx.fillStyle = "#ffdbac";
-      ctx.fillRect(-8, -14, 16, 14);
-
-      // Minecraft Eyes
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, -9, 4, 3);
-      ctx.fillStyle = "#2563eb";
-      ctx.fillRect(2, -9, 2, 3);
-
-      // Cap / Hair
-      ctx.fillStyle = "#1e1b18";
-      ctx.fillRect(-8, -14, 16, 4);
-
-      // Yellow Hoodie
+      // Bird Body (Golden Yellow Circle)
       ctx.fillStyle = "#facc15";
-      ctx.fillRect(-7, 0, 14, 12);
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = "#facc15";
+      ctx.beginPath();
+      ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
+      ctx.fill();
 
-      // FZ / Hoodie zipper detail
+      // Belly / Light Chest
+      ctx.fillStyle = "#fef08a";
+      ctx.beginPath();
+      ctx.arc(-2, 3, bird.radius * 0.65, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Wing (Flapping Animation)
+      bird.wingAnim += 0.15;
+      const wingOffset = Math.sin(bird.wingAnim) * 4;
+      ctx.fillStyle = "#eab308";
+      ctx.beginPath();
+      ctx.ellipse(-4, wingOffset, 6, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye (White with black pupil)
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(5, -4, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
       ctx.fillStyle = "#000000";
-      ctx.fillRect(-1, 2, 2, 8);
+      ctx.beginPath();
+      ctx.arc(6.5, -4, 2, 0, Math.PI * 2);
+      ctx.fill();
 
-      // Black Trousers / Legs
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(-6, 12, 5, 7);
-      ctx.fillRect(1, 12, 5, 7);
+      // Beak (Orange Triangle)
+      ctx.fillStyle = "#f97316";
+      ctx.beginPath();
+      ctx.moveTo(11, -2);
+      ctx.lineTo(19, 1);
+      ctx.lineTo(11, 4);
+      ctx.closePath();
+      ctx.fill();
 
       ctx.restore();
     }
@@ -443,15 +283,17 @@
       if (!isPlaying || waitingToFlap) return;
       frame++;
 
-      player.vy += player.gravity;
-      player.y += player.vy;
+      // Bird Physics
+      bird.vy += bird.gravity;
+      bird.y += bird.vy;
 
-      if (player.y + player.h >= canvas.height || player.y <= 0) {
+      // Floor & Ceiling Collision
+      if (bird.y + bird.radius >= canvas.height || bird.y - bird.radius <= 0) {
         triggerCrash();
         return;
       }
 
-      // Spawn Pillars
+      // Spawning Pipes
       if (frame % 85 === 0) {
         const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 90)) + 40;
         pipes.push({
@@ -465,42 +307,43 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackgroundGrid();
 
-      // Draw Obsidian Pillars
+      // Draw Pipes
       for (let i = pipes.length - 1; i >= 0; i--) {
         const p = pipes[i];
         p.x -= pipeSpeed;
 
-        // Top Pillar
-        ctx.fillStyle = "#0f172a";
+        // Top Pipe
+        ctx.fillStyle = "#081b3b";
         ctx.strokeStyle = "#38bdf8";
         ctx.lineWidth = 2;
         ctx.fillRect(p.x, 0, pipeWidth, p.top);
         ctx.strokeRect(p.x, -2, pipeWidth, p.top + 2);
 
-        // Bottom Pillar
+        // Bottom Pipe
         const bottomY = canvas.height - p.bottom;
         ctx.fillRect(p.x, bottomY, pipeWidth, p.bottom);
         ctx.strokeRect(p.x, bottomY, pipeWidth, p.bottom + 2);
 
-        // Glowing Core Border
+        // Glowing Pipe Rim Caps
         ctx.fillStyle = "#06b6d4";
-        ctx.fillRect(p.x - 2, p.top - 6, pipeWidth + 4, 6);
-        ctx.fillRect(p.x - 2, bottomY, pipeWidth + 4, 6);
+        ctx.fillRect(p.x - 2, p.top - 7, pipeWidth + 4, 7);
+        ctx.fillRect(p.x - 2, bottomY, pipeWidth + 4, 7);
 
-        // Collision Check
+        // Circular Bird Collision Check
         if (
-          player.x + player.w > p.x &&
-          player.x < p.x + pipeWidth &&
-          (player.y < p.top || player.y + player.h > bottomY)
+          bird.x + bird.radius > p.x &&
+          bird.x - bird.radius < p.x + pipeWidth &&
+          (bird.y - bird.radius < p.top || bird.y + bird.radius > bottomY)
         ) {
           triggerCrash();
           return;
         }
 
-        if (!p.scored && p.x + pipeWidth < player.x) {
+        // Score increment
+        if (!p.scored && p.x + pipeWidth < bird.x) {
           p.scored = true;
           score++;
-          scoreEl.textContent = score;
+          currentScoreEl.textContent = score;
         }
 
         if (p.x + pipeWidth < -10) pipes.splice(i, 1);
@@ -520,17 +363,18 @@
 
         ctx.fillStyle = pt.color;
         ctx.globalAlpha = pt.life;
-        ctx.fillRect(pt.x, pt.y, pt.size, pt.size);
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+        ctx.fill();
         ctx.globalAlpha = 1;
       }
 
-      drawMinecraftPlayer();
+      drawBird();
       requestAnimationFrame(loop);
     }
 
-    if (currentPlayer) {
-      prepareGame();
-    }
+    // Start in ready state
+    resetGame();
   </script>
 </body>
 </html>
