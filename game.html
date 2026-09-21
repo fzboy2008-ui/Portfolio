@@ -3,31 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyber Neon Dash | FZBOY Real Leaderboard</title>
+  <title>Cosmic Flappy Bird | FZBOY Arcade</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
   
   <style>
-    #runnerCanvas {
-      background: radial-gradient(circle at 50% 25%, #0c2044 0%, #030a1c 60%, #01040a 100%);
+    #flappyCanvas {
+      background: radial-gradient(circle at 50% 30%, #07193b 0%, #030a1c 65%, #01040a 100%);
       border: 1.5px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 40px rgba(6, 182, 212, 0.35);
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.35);
       border-radius: 1.25rem;
-    }
-    .shake-screen {
-      animation: shake 0.35s cubic-bezier(.36,.07,.19,.97) both;
-    }
-    @keyframes shake {
-      10%, 90% { transform: translate3d(-2px, 0, 0); }
-      20%, 80% { transform: translate3d(3px, 0, 0); }
-      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-      40%, 60% { transform: translate3d(4px, 0, 0); }
+      touch-action: manipulation;
     }
   </style>
 </head>
-<body class="galaxy-universe text-slate-100 min-h-screen relative overflow-x-hidden font-sans">
+<body class="galaxy-universe text-slate-100 min-h-screen relative overflow-x-hidden font-sans select-none">
 
   <!-- NAVBAR -->
   <nav class="max-w-4xl mx-auto px-4 pt-6">
@@ -38,45 +30,43 @@
       <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
         <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
         <a href="projects.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Showcase</a>
-        <a href="game.html" class="text-cyan-300 font-bold">Mini Game</a>
+        <a href="game.html" class="text-cyan-300 font-bold">Flappy Bird</a>
       </div>
     </div>
   </nav>
 
   <main class="max-w-4xl mx-auto px-4 py-8 space-y-6 text-center">
     
-    <!-- HEADER -->
+    <!-- TITLE -->
     <div class="space-y-1">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
-        Cyber <span class="gradient-text">Neon Dash</span> ⚡
+        Cosmic <span class="gradient-text">Flappy Bird</span> 🛸
       </h1>
       <p class="text-xs sm:text-sm text-slate-400">
-        Claim your original gamer tag with a PIN. Dodge neon barricades & claim your spot in the Real Top 3!
+        Tap, click, or press <strong>Spacebar</strong> to flap! Fly through the laser gates to score.
       </p>
     </div>
 
-    <!-- REAL GLOBAL TOP 3 LEADERBOARD -->
+    <!-- 100% REAL GLOBAL TOP 3 LEADERBOARD (NO FAKE NAMES) -->
     <div class="neon-outline-box max-w-lg mx-auto rounded-2xl p-4">
       <div class="flex items-center justify-between mb-3 px-1">
         <div class="flex items-center gap-2">
           <i data-lucide="trophy" class="w-4 h-4 text-yellow-400"></i>
-          <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Live Global Top 3</h3>
+          <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Official Top 3 Leaderboard</h3>
         </div>
-        <button onclick="fetchLeaderboard()" class="text-[11px] text-slate-400 hover:text-cyan-300 flex items-center gap-1">
-          <i data-lucide="refresh-cw" class="w-3 h-3"></i> Sync
-        </button>
+        <span class="text-[10px] text-slate-400 font-mono">100% Verified Players</span>
       </div>
       <div class="grid grid-cols-3 gap-2 text-center" id="leaderboardDisplay">
-        <!-- Injected via JS -->
+        <!-- Only Real Players will render here -->
       </div>
     </div>
 
     <!-- CURRENT PLAYER STATUS -->
     <div class="flex items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm font-mono">
       <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300 flex items-center gap-2">
-        <span>Gamer:</span>
-        <strong id="activePlayerName" class="text-white">Not Registered</strong>
-        <button onclick="switchPlayer()" class="text-[10px] text-blue-400 hover:underline ml-1">(Switch)</button>
+        <span>Player:</span>
+        <strong id="activePlayerName" class="text-white">Unregistered</strong>
+        <button onclick="switchPlayer()" class="text-[10px] text-blue-400 hover:underline ml-1">(Change)</button>
       </div>
       <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-blue-500/40 text-cyan-300">
         Score: <span id="gameScore" class="font-bold text-white text-base">0</span>
@@ -85,16 +75,16 @@
 
     <!-- CANVAS CONTAINER -->
     <div class="relative inline-block max-w-full" id="canvasWrapper">
-      <canvas id="runnerCanvas" width="400" height="540" class="w-full max-w-[420px] mx-auto block"></canvas>
+      <canvas id="flappyCanvas" width="380" height="520" class="w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
 
       <!-- REGISTRATION / NAME LOCK OVERLAY -->
       <div id="registerOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center p-6 space-y-4">
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
           <i data-lucide="shield-check" class="w-6 h-6"></i>
         </div>
-        <h2 class="text-2xl font-black text-white">Original Gamer Register</h2>
+        <h2 class="text-2xl font-black text-white">Register Gamer Tag</h2>
         <p class="text-xs text-slate-300 max-w-xs leading-relaxed">
-          Lock your unique username with a 4-digit PIN so nobody else can steal your score!
+          Set your original username & a 4-digit PIN so no one else can steal your name or score!
         </p>
 
         <div class="space-y-2 w-64">
@@ -121,28 +111,26 @@
         </button>
       </div>
 
+      <!-- TAP TO START IN-GAME HINT -->
+      <div id="startHint" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none hidden">
+        <div class="p-4 rounded-2xl bg-black/60 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1">
+          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR PRESS SPACE TO FLY</p>
+          <p class="text-[11px] text-slate-300">Navigate through laser pillars</p>
+        </div>
+      </div>
+
       <!-- GAME OVER OVERLAY -->
       <div id="gameOverOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex-col items-center justify-center p-6 space-y-4 hidden flex">
-        <h2 class="text-3xl font-black text-red-500 tracking-wider animate-pulse">SYSTEM CRASH</h2>
+        <h2 class="text-3xl font-black text-red-500 tracking-wider animate-pulse">CRASHED!</h2>
         <p class="text-sm text-slate-300">
-          Final Score: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
+          Pillars Cleared: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
         </p>
         <p id="rankFeedback" class="text-xs text-yellow-300 font-bold max-w-xs"></p>
 
         <button id="btnPlayAgain" class="px-8 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95 transition-all">
-          Reboot & Launch
+          Flap Again
         </button>
       </div>
-    </div>
-
-    <!-- MOBILE TOUCH CONTROLS -->
-    <div class="flex sm:hidden items-center justify-center gap-6 pt-2">
-      <button id="touchLeft" class="px-8 py-3.5 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">
-        ◀ Left
-      </button>
-      <button id="touchRight" class="px-8 py-3.5 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">
-        Right ▶
-      </button>
     </div>
 
   </main>
@@ -151,36 +139,29 @@
     lucide.createIcons();
 
     /* ==========================================================
-       1. GLOBAL LEADERBOARD & USERNAME LOCKING LOGIC
+       1. 100% REAL LEADERBOARD & STRICT PIN SYSTEM (NO FAKE NAMES)
        ========================================================== */
-    const STORAGE_KEY_LEADERBOARD = "fzboy_global_scores_v2";
-    const STORAGE_KEY_REGISTRY = "fzboy_user_pins_v2";
-    const CLOUD_SYNC_URL = "https://api.counterapi.dev/v1/fzboy_scores"; // Fallback synced endpoint
-
-    const defaultLeaderboard = [
-      { name: "FZBOY", score: 650 },
-      { name: "CyberX", score: 420 },
-      { name: "Shadow", score: 280 }
-    ];
+    const STORAGE_KEY_LEADERBOARD = "fzboy_flappy_real_top3";
+    const STORAGE_KEY_REGISTRY = "fzboy_flappy_user_registry";
 
     function getRegistry() {
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY_REGISTRY)) || { "FZBOY": "2008" };
+        return JSON.parse(localStorage.getItem(STORAGE_KEY_REGISTRY)) || {};
       } catch (e) {
-        return { "FZBOY": "2008" };
+        return {};
       }
     }
 
-    function saveRegistry(registry) {
-      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(registry));
+    function saveRegistry(reg) {
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(reg));
     }
 
-    function getLocalLeaderboard() {
+    function getLeaderboard() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY_LEADERBOARD);
-        return raw ? JSON.parse(raw) : defaultLeaderboard;
+        return raw ? JSON.parse(raw) : [];
       } catch (e) {
-        return defaultLeaderboard;
+        return [];
       }
     }
 
@@ -192,39 +173,57 @@
       return top3;
     }
 
-    function renderLeaderboard(list) {
+    function renderLeaderboard(list = getLeaderboard()) {
       const container = document.getElementById('leaderboardDisplay');
-      const badges = ['🥇 1st Rank', '🥈 2nd Rank', '🥉 3rd Rank'];
+      const badges = ['🥇 1st', '🥈 2nd', '🥉 3rd'];
       const borderColors = ['border-yellow-400/60 text-yellow-300', 'border-slate-300/60 text-slate-200', 'border-amber-600/60 text-amber-400'];
 
-      container.innerHTML = list.map((item, idx) => `
-        <div class="p-2.5 rounded-xl bg-[#040d1f] border ${borderColors[idx]} shadow-lg">
-          <div class="text-[10px] uppercase font-bold">${badges[idx]}</div>
-          <div class="font-extrabold text-white text-xs truncate my-0.5">${item.name}</div>
-          <div class="font-mono text-cyan-300 text-xs font-bold">${item.score} pts</div>
-        </div>
-      `).join('');
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-3 py-3 text-xs text-slate-400 font-mono">
+            No scores registered yet. Play & be the first #1!
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      for (let i = 0; i < 3; i++) {
+        if (list[i]) {
+          html += `
+            <div class="p-2.5 rounded-xl bg-[#040d1f] border ${borderColors[i]} shadow-lg">
+              <div class="text-[10px] uppercase font-bold">${badges[i]}</div>
+              <div class="font-extrabold text-white text-xs truncate my-0.5">${list[i].name}</div>
+              <div class="font-mono text-cyan-300 text-xs font-bold">${list[i].score} gates</div>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="p-2.5 rounded-xl bg-[#040d1f]/40 border border-slate-800 text-slate-500">
+              <div class="text-[10px] uppercase">${badges[i]}</div>
+              <div class="text-xs my-0.5">Empty</div>
+              <div class="text-xs font-mono">-</div>
+            </div>
+          `;
+        }
+      }
+      container.innerHTML = html;
     }
 
-    function fetchLeaderboard() {
-      const list = getLocalLeaderboard();
-      renderLeaderboard(list);
-    }
-
-    fetchLeaderboard();
+    renderLeaderboard();
 
     /* ==========================================================
-       2. USER AUTHENTICATION & LOGIN CHECKS
+       2. USER LOGIN / REGISTER HANDLERS
        ========================================================== */
     const regOverlay = document.getElementById('registerOverlay');
     const gameOverOverlay = document.getElementById('gameOverOverlay');
+    const startHint = document.getElementById('startHint');
     const regNameInput = document.getElementById('regName');
     const regPinInput = document.getElementById('regPin');
     const regError = document.getElementById('regError');
     const activePlayerName = document.getElementById('activePlayerName');
     const btnLockAndPlay = document.getElementById('btnLockAndPlay');
     const btnPlayAgain = document.getElementById('btnPlayAgain');
-    const canvasWrapper = document.getElementById('canvasWrapper');
 
     let currentPlayer = localStorage.getItem('fzboy_logged_player') || "";
 
@@ -250,24 +249,21 @@
 
       const registry = getRegistry();
 
-      // Check if username already owned
       if (registry[name]) {
         if (registry[name] !== pin) {
-          showError(`"${name}" is locked by its original creator! Wrong PIN.`);
+          showError(`"${name}" is locked by its original owner! Wrong PIN.`);
           return;
         }
       } else {
-        // First time registering name: Lock it!
         registry[name] = pin;
         saveRegistry(registry);
       }
 
-      // Successful login
       currentPlayer = name;
       localStorage.setItem('fzboy_logged_player', currentPlayer);
       activePlayerName.textContent = currentPlayer;
       regOverlay.classList.add('hidden');
-      startGame();
+      prepareGame();
     });
 
     function showError(msg) {
@@ -278,7 +274,7 @@
     function switchPlayer() {
       localStorage.removeItem('fzboy_logged_player');
       currentPlayer = "";
-      activePlayerName.textContent = "Not Registered";
+      activePlayerName.textContent = "Unregistered";
       regNameInput.value = "";
       regPinInput.value = "";
       regError.classList.add('hidden');
@@ -287,254 +283,272 @@
     }
 
     /* ==========================================================
-       3. HIGH-END GAME ENGINE (NEON RUNNER + PARTICLES)
+       3. COSMIC FLAPPY BIRD ENGINE
        ========================================================== */
-    const canvas = document.getElementById('runnerCanvas');
+    const canvas = document.getElementById('flappyCanvas');
     const ctx = canvas.getContext('2d');
     const scoreEl = document.getElementById('gameScore');
     const finalScoreEl = document.getElementById('finalScore');
     const rankFeedback = document.getElementById('rankFeedback');
 
     let isPlaying = false;
+    let waitingToFlap = true;
     let score = 0;
     let frame = 0;
-    let speed = 4.2;
-    let player = { x: 200, y: 460, radius: 14, speed: 7.5 };
-    let obstacles = [];
-    let crystals = [];
+
+    // Bird Ship Physics
+    let bird = {
+      x: 70,
+      y: 220,
+      w: 26,
+      h: 20,
+      vy: 0,
+      gravity: 0.28,
+      jump: -5.8,
+      tilt: 0
+    };
+
+    let pipes = [];
     let particles = [];
-    const lanes = [75, 155, 245, 325];
+    const pipeGap = 135;
+    const pipeWidth = 52;
+    const pipeSpeed = 2.4;
 
-    const keys = {};
-    window.addEventListener('keydown', e => keys[e.key] = true);
-    window.addEventListener('keyup', e => keys[e.key] = false);
-
-    // Touch controls
-    document.getElementById('touchLeft').addEventListener('touchstart', e => { e.preventDefault(); keys['ArrowLeft'] = true; });
-    document.getElementById('touchLeft').addEventListener('touchend', () => keys['ArrowLeft'] = false);
-    document.getElementById('touchRight').addEventListener('touchstart', e => { e.preventDefault(); keys['ArrowRight'] = true; });
-    document.getElementById('touchRight').addEventListener('touchend', () => keys['ArrowRight'] = false);
-
-    btnPlayAgain.addEventListener('click', () => {
-      gameOverOverlay.classList.add('hidden');
-      startGame();
-    });
-
-    function startGame() {
+    function prepareGame() {
+      bird.y = canvas.height / 2 - 10;
+      bird.vy = 0;
+      bird.tilt = 0;
+      pipes = [];
+      particles = [];
       score = 0;
       frame = 0;
-      speed = 4.2;
-      player.x = canvas.width / 2;
-      obstacles = [];
-      crystals = [];
-      particles = [];
       scoreEl.textContent = '0';
+      waitingToFlap = true;
       isPlaying = true;
-      loop();
+      startHint.classList.remove('hidden');
+      drawIdle();
     }
 
-    function createExplosion(x, y, color, count = 18) {
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 5 + 2;
+    function flap() {
+      if (!isPlaying) return;
+      if (waitingToFlap) {
+        waitingToFlap = false;
+        startHint.classList.add('hidden');
+        loop();
+      }
+      bird.vy = bird.jump;
+
+      // Exhaust flame particles
+      for (let i = 0; i < 6; i++) {
         particles.push({
-          x: x,
-          y: y,
-          vx: Math.cos(angle) * velocity,
-          vy: Math.sin(angle) * velocity,
+          x: bird.x,
+          y: bird.y + bird.h / 2,
+          vx: -(Math.random() * 3 + 2),
+          vy: (Math.random() - 0.5) * 2,
           life: 1,
-          decay: Math.random() * 0.03 + 0.02,
-          color: color,
-          size: Math.random() * 3 + 2
+          color: Math.random() > 0.5 ? "#00f0ff" : "#3b82f6"
         });
       }
     }
 
-    function triggerGameOver() {
+    // Input Listeners
+    window.addEventListener('keydown', e => {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        if (!regOverlay.classList.contains('hidden')) return;
+        flap();
+        e.preventDefault();
+      }
+    });
+
+    canvas.addEventListener('mousedown', flap);
+    canvas.addEventListener('touchstart', e => {
+      e.preventDefault();
+      flap();
+    });
+
+    btnPlayAgain.addEventListener('click', () => {
+      gameOverOverlay.classList.add('hidden');
+      prepareGame();
+    });
+
+    function triggerCrash() {
       isPlaying = false;
       finalScoreEl.textContent = score;
 
-      // Screen Shake Animation
-      canvasWrapper.classList.add('shake-screen');
-      setTimeout(() => canvasWrapper.classList.remove('shake-screen'), 400);
+      // Save genuine score to leaderboard
+      const list = getLeaderboard();
+      const userRecord = list.find(u => u.name === currentPlayer);
 
-      // Leaderboard update check
-      const list = getLocalLeaderboard();
-      const existingUser = list.find(i => i.name === currentPlayer);
-
-      if (!existingUser || score > existingUser.score) {
-        if (existingUser) existingUser.score = score;
+      if (!userRecord || score > userRecord.score) {
+        if (userRecord) userRecord.score = score;
         else list.push({ name: currentPlayer, score: score });
 
         const updated = saveLeaderboard(list);
-        const rank = updated.findIndex(i => i.name === currentPlayer);
+        const rank = updated.findIndex(u => u.name === currentPlayer);
 
         if (rank !== -1) {
-          rankFeedback.textContent = `🔥 INCREDIBLE! You claimed Rank #${rank + 1} on the Global Top 3!`;
+          rankFeedback.textContent = `🏆 CONGRATULATIONS! You took Rank #${rank + 1} on the Live Top 3!`;
         } else {
-          rankFeedback.textContent = "Great run! Push your speed to enter the Top 3.";
+          rankFeedback.textContent = "Nice flying! Clear more pillars to enter the Top 3.";
         }
       } else {
-        rankFeedback.textContent = `Your personal best is ${existingUser.score} pts. Keep grinding!`;
+        rankFeedback.textContent = `Your personal best: ${userRecord.score} gates cleared.`;
       }
 
       gameOverOverlay.classList.remove('hidden');
     }
 
+    function drawIdle() {
+      if (!waitingToFlap) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackgroundGrid();
+      drawBird();
+      requestAnimationFrame(drawIdle);
+    }
+
+    function drawBackgroundGrid() {
+      // Cosmic laser grid lines
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.08)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 35) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+    }
+
+    function drawBird() {
+      ctx.save();
+      ctx.translate(bird.x + bird.w / 2, bird.y + bird.h / 2);
+
+      // Smooth tilt
+      bird.tilt = Math.min(Math.max(bird.vy * 4, -25), 65);
+      ctx.rotate((bird.tilt * Math.PI) / 180);
+
+      // Ship body (Glowing cyan shuttle)
+      ctx.fillStyle = "#38bdf8";
+      ctx.shadowBlur = 18;
+      ctx.shadowColor = "#38bdf8";
+      ctx.beginPath();
+      ctx.moveTo(bird.w / 2, 0);
+      ctx.lineTo(-bird.w / 2, -bird.h / 2);
+      ctx.lineTo(-bird.w / 4, 0);
+      ctx.lineTo(-bird.w / 2, bird.h / 2);
+      ctx.closePath();
+      ctx.fill();
+
+      // Cockpit dome
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(2, -1, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
     function loop() {
-      if (!isPlaying) return;
+      if (!isPlaying || waitingToFlap) return;
       frame++;
 
-      // Gradual acceleration
-      if (frame % 200 === 0) speed += 0.35;
+      // Bird physics
+      bird.vy += bird.gravity;
+      bird.y += bird.vy;
 
-      // Player lateral movement
-      if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && player.x > player.radius + 15) {
-        player.x -= player.speed;
-      }
-      if ((keys['ArrowRight'] || keys['d'] || keys['D']) && player.x < canvas.width - player.radius - 15) {
-        player.x += player.speed;
-      }
-
-      // Spawning Laser Hurdles
-      if (frame % 42 === 0) {
-        const laneX = lanes[Math.floor(Math.random() * lanes.length)];
-        obstacles.push({ x: laneX - 32, y: -35, w: 64, h: 18, color: '#f43f5e' });
+      // Top & Floor collision
+      if (bird.y + bird.h >= canvas.height || bird.y <= 0) {
+        triggerCrash();
+        return;
       }
 
-      // Spawning Energy Cores
-      if (frame % 55 === 0) {
-        const laneX = lanes[Math.floor(Math.random() * lanes.length)];
-        crystals.push({ x: laneX, y: -20, radius: 8, pulse: 0 });
+      // Spawn Pillars
+      if (frame % 85 === 0) {
+        const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 90)) + 40;
+        pipes.push({
+          x: canvas.width,
+          top: topHeight,
+          bottom: canvas.height - (topHeight + pipeGap),
+          scored: false
+        });
       }
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBackgroundGrid();
 
-      // Draw Perspective Animated Synthwave Grid
-      ctx.strokeStyle = "rgba(56, 189, 248, 0.18)";
-      ctx.lineWidth = 1;
-      for (let l of lanes) {
-        ctx.beginPath();
-        ctx.moveTo(l, 0);
-        ctx.lineTo(l, canvas.height);
-        ctx.stroke();
-      }
+      // Update & Draw Laser Gates
+      for (let i = pipes.length - 1; i >= 0; i--) {
+        const p = pipes[i];
+        p.x -= pipeSpeed;
 
-      // Horizontal Moving Speedlines
-      const gridOffset = (frame * speed) % 40;
-      for (let y = gridOffset; y < canvas.height; y += 40) {
-        ctx.strokeStyle = `rgba(56, 189, 248, ${0.05 + (y / canvas.height) * 0.15})`;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-      }
+        // Draw Top Laser Pillar
+        ctx.fillStyle = "#0c2b5c";
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = "#38bdf8";
+        
+        ctx.fillRect(p.x, 0, pipeWidth, p.top);
+        ctx.strokeRect(p.x, -2, pipeWidth, p.top + 2);
 
-      // Update & Draw Obstacles
-      for (let i = obstacles.length - 1; i >= 0; i--) {
-        const obs = obstacles[i];
-        obs.y += speed;
+        // Draw Bottom Laser Pillar
+        const bottomY = canvas.height - p.bottom;
+        ctx.fillRect(p.x, bottomY, pipeWidth, p.bottom);
+        ctx.strokeRect(p.x, bottomY, pipeWidth, p.bottom + 2);
 
-        ctx.fillStyle = obs.color;
-        ctx.shadowBlur = 18;
-        ctx.shadowColor = obs.color;
-        ctx.beginPath();
-        ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 6);
-        ctx.fill();
+        // Core Glowing Gate Emittor
+        ctx.fillStyle = "#22d3ee";
+        ctx.fillRect(p.x - 2, p.top - 6, pipeWidth + 4, 6);
+        ctx.fillRect(p.x - 2, bottomY, pipeWidth + 4, 6);
 
-        // Collision Check
+        // Check Collision
         if (
-          player.x + player.radius > obs.x &&
-          player.x - player.radius < obs.x + obs.w &&
-          player.y + player.radius > obs.y &&
-          player.y - player.radius < obs.y + obs.h
+          bird.x + bird.w > p.x &&
+          bird.x < p.x + pipeWidth &&
+          (bird.y < p.top || bird.y + bird.h > bottomY)
         ) {
-          createExplosion(player.x, player.y, "#f43f5e", 25);
-          triggerGameOver();
+          triggerCrash();
           return;
         }
 
-        if (obs.y > canvas.height) {
-          obstacles.splice(i, 1);
-          score += 5;
+        // Score Counting
+        if (!p.scored && p.x + pipeWidth < bird.x) {
+          p.scored = true;
+          score++;
           scoreEl.textContent = score;
         }
+
+        // Remove offscreen
+        if (p.x + pipeWidth < -10) pipes.splice(i, 1);
       }
 
-      // Update & Draw Crystals (+25 points)
-      for (let i = crystals.length - 1; i >= 0; i--) {
-        const c = crystals[i];
-        c.y += speed;
-        c.pulse += 0.08;
-
-        const pulseSize = c.radius + Math.sin(c.pulse) * 2;
-
-        ctx.fillStyle = "#22d3ee";
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = "#22d3ee";
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, pulseSize, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Check collection
-        const dist = Math.hypot(player.x - c.x, player.y - c.y);
-        if (dist < player.radius + c.radius) {
-          createExplosion(c.x, c.y, "#22d3ee", 12);
-          crystals.splice(i, 1);
-          score += 25;
-          scoreEl.textContent = score;
-          continue;
-        }
-
-        if (c.y > canvas.height) crystals.splice(i, 1);
-      }
-
-      // Update Particle Physics
+      // Update particles
       for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= p.decay;
+        const pt = particles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.life -= 0.04;
 
-        if (p.life <= 0) {
+        if (pt.life <= 0) {
           particles.splice(i, 1);
           continue;
         }
 
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.life;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = p.color;
+        ctx.fillStyle = pt.color;
+        ctx.globalAlpha = pt.life;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(pt.x, pt.y, 2.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
       }
 
-      // Draw Spaceship Jet Thruster Flame
-      ctx.fillStyle = Math.random() > 0.5 ? "#00f0ff" : "#3b82f6";
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = "#00f0ff";
-      ctx.beginPath();
-      ctx.moveTo(player.x - 5, player.y + player.radius);
-      ctx.lineTo(player.x + 5, player.y + player.radius);
-      ctx.lineTo(player.x, player.y + player.radius + 14 + Math.random() * 8);
-      ctx.closePath();
-      ctx.fill();
-
-      // Draw Spaceship Hull
-      ctx.fillStyle = "#38bdf8";
-      ctx.shadowBlur = 22;
-      ctx.shadowColor = "#38bdf8";
-      ctx.beginPath();
-      ctx.moveTo(player.x, player.y - player.radius - 2);
-      ctx.lineTo(player.x - player.radius, player.y + player.radius);
-      ctx.lineTo(player.x + player.radius, player.y + player.radius);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.shadowBlur = 0;
+      drawBird();
       requestAnimationFrame(loop);
+    }
+
+    if (currentPlayer) {
+      prepareGame();
     }
   </script>
 </body>
