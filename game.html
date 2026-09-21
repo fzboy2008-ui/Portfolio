@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Galaxy Defender | FZBOY Arcade</title>
+  <title>Cyber Neon Dash | FZBOY Arcade</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
   
   <style>
-    #gameCanvas {
-      background: radial-gradient(circle at center, #07173b 0%, #030a1c 65%, #01040a 100%);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 35px rgba(6, 182, 212, 0.35);
+    #runnerCanvas {
+      background: radial-gradient(circle at 50% 30%, #0a1f44 0%, #030a1c 65%, #01040a 100%);
+      border: 1.5px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 35px rgba(6, 182, 212, 0.4);
       border-radius: 1.25rem;
     }
   </style>
@@ -36,214 +36,313 @@
 
   <main class="max-w-4xl mx-auto px-4 py-8 space-y-6 text-center">
     
-    <div class="space-y-2">
+    <!-- HEADER -->
+    <div class="space-y-1">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
-        Galaxy <span class="gradient-text">Defender</span> 🚀
+        Cyber <span class="gradient-text">Neon Dash</span> ⚡
       </h1>
       <p class="text-xs sm:text-sm text-slate-400">
-        Destroy incoming enemy meteors! Controls: <strong>Left/Right Arrows</strong> or <strong>A / D</strong> (or tap left/right on screen) & <strong>Spacebar</strong> to Shoot.
+        Dodge the red laser barriers, gather cyan energy crystals, and climb to the Top 3 Leaderboard!
       </p>
     </div>
 
-    <!-- SCOREBOARD -->
-    <div class="flex items-center justify-center gap-8 py-2 text-sm font-mono">
-      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300">
-        Score: <span id="gameScore" class="font-bold text-white text-base">0</span>
+    <!-- TOP 3 HALL OF FAME LEADERBOARD -->
+    <div class="neon-outline-box max-w-lg mx-auto rounded-2xl p-4">
+      <div class="flex items-center justify-center gap-2 mb-3">
+        <i data-lucide="trophy" class="w-4 h-4 text-yellow-400"></i>
+        <h3 class="text-xs sm:text-sm font-bold tracking-wider uppercase text-cyan-300">Top 3 Hall of Fame</h3>
       </div>
-      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-blue-500/40 text-blue-300">
-        High Score: <span id="highScore" class="font-bold text-white text-base">0</span>
+      <div class="grid grid-cols-3 gap-2 text-center" id="leaderboardDisplay">
+        <!-- Injected via JS -->
       </div>
     </div>
 
-    <!-- CANVAS WRAPPER -->
-    <div class="relative inline-block max-w-full">
-      <canvas id="gameCanvas" width="400" height="520" class="w-full max-w-[420px] mx-auto block"></canvas>
+    <!-- CURRENT STATS -->
+    <div class="flex items-center justify-center gap-6 text-xs sm:text-sm font-mono">
+      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300">
+        Player: <span id="playerNameDisplay" class="font-bold text-white">Guest</span>
+      </div>
+      <div class="px-4 py-1.5 rounded-xl bg-[#06142e] border border-blue-500/40 text-cyan-300">
+        Score: <span id="gameScore" class="font-bold text-white text-base">0</span>
+      </div>
+    </div>
 
-      <!-- Game Over / Start Overlay -->
-      <div id="gameOverlay" class="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center p-6 space-y-4">
-        <h2 id="overlayTitle" class="text-2xl sm:text-3xl font-black text-cyan-400">READY TO PLAY?</h2>
-        <p id="overlayDesc" class="text-xs sm:text-sm text-slate-300 max-w-xs">
-          Dodge asteroid debris and blast cosmic invaders to survive!
+    <!-- GAME CANVAS CONTAINER -->
+    <div class="relative inline-block max-w-full">
+      <canvas id="runnerCanvas" width="400" height="540" class="w-full max-w-[420px] mx-auto block"></canvas>
+
+      <!-- START / NAME PROMPT OVERLAY -->
+      <div id="startOverlay" class="absolute inset-0 bg-black/85 backdrop-blur-md rounded-2xl flex flex-col items-center justify-center p-6 space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
+          <i data-lucide="gamepad" class="w-6 h-6"></i>
+        </div>
+        <h2 class="text-2xl font-black text-white">Enter Gamer Tag</h2>
+        <p class="text-xs text-slate-300 max-w-xs">
+          Enter your name to register your high score in the Top 3 Leaderboard.
         </p>
-        <button id="startBtn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
-          Launch Ship
+
+        <input 
+          type="text" 
+          id="nameInput" 
+          maxlength="12"
+          placeholder="e.g. Shadow77" 
+          class="px-4 py-2.5 rounded-xl bg-[#081836] border border-cyan-400/50 text-white placeholder-slate-500 text-center font-mono text-sm focus:outline-none focus:border-cyan-300 focus:ring-2 focus:ring-cyan-400/30 w-56"
+        />
+
+        <button id="startBtn" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-bold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
+          Start Game
+        </button>
+      </div>
+
+      <!-- GAME OVER OVERLAY -->
+      <div id="gameOverOverlay" class="absolute inset-0 bg-black/90 backdrop-blur-md rounded-2xl flex-col items-center justify-center p-6 space-y-4 hidden flex">
+        <h2 class="text-3xl font-black text-red-500 animate-pulse">CRASHED!</h2>
+        <p class="text-sm text-slate-300">
+          Final Score: <strong id="finalScore" class="text-cyan-300 font-mono text-xl">0</strong>
+        </p>
+        <p id="rankAlert" class="text-xs text-yellow-300 font-bold"></p>
+
+        <button id="restartBtn" class="px-8 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95 transition-all">
+          Play Again
         </button>
       </div>
     </div>
 
-    <!-- MOBILE TOUCH CONTROLS -->
-    <div class="flex sm:hidden items-center justify-center gap-4 pt-2">
-      <button id="btnLeft" class="px-6 py-3 rounded-xl bg-[#081b3b] border border-cyan-500/40 text-cyan-300 active:bg-cyan-500 active:text-black font-bold">◄ Left</button>
-      <button id="btnShoot" class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold active:bg-blue-400">🔥 Fire</button>
-      <button id="btnRight" class="px-6 py-3 rounded-xl bg-[#081b3b] border border-cyan-500/40 text-cyan-300 active:bg-cyan-500 active:text-black font-bold">Right ►</button>
+    <!-- TOUCH CONTROLS FOR MOBILE -->
+    <div class="flex sm:hidden items-center justify-center gap-6 pt-2">
+      <button id="touchLeft" class="px-8 py-3.5 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">
+        ◀ Left
+      </button>
+      <button id="touchRight" class="px-8 py-3.5 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">
+        Right ▶
+      </button>
     </div>
 
   </main>
 
-  <!-- Mini Game Engine -->
   <script>
     lucide.createIcons();
 
-    const canvas = document.getElementById('gameCanvas');
+    // LEADERBOARD LOGIC
+    const defaultScores = [
+      { name: "FZBOY", score: 480 },
+      { name: "Vortex", score: 320 },
+      { name: "Nova", score: 190 }
+    ];
+
+    function getLeaderboard() {
+      const data = localStorage.getItem('fzboy_top3_scores');
+      return data ? JSON.parse(data) : defaultScores;
+    }
+
+    function saveScore(name, newScore) {
+      let list = getLeaderboard();
+      list.push({ name: name, score: newScore });
+      list.sort((a, b) => b.score - a.score);
+      list = list.slice(0, 3); // Keep only top 3
+      localStorage.setItem('fzboy_top3_scores', JSON.stringify(list));
+      renderLeaderboard();
+      return list.some(item => item.name === name && item.score === newScore);
+    }
+
+    function renderLeaderboard() {
+      const container = document.getElementById('leaderboardDisplay');
+      const list = getLeaderboard();
+      const badges = ['🥇 1st', '🥈 2nd', '🥉 3rd'];
+      const colors = ['border-yellow-500/50 text-yellow-300', 'border-slate-400/50 text-slate-200', 'border-amber-600/50 text-amber-400'];
+
+      container.innerHTML = list.map((item, i) => `
+        <div class="p-2 rounded-xl bg-[#040c1a] border ${colors[i]}">
+          <div class="text-[10px] uppercase font-bold">${badges[i]}</div>
+          <div class="font-bold text-white text-xs truncate">${item.name}</div>
+          <div class="font-mono text-cyan-300 text-xs">${item.score} pts</div>
+        </div>
+      `).join('');
+    }
+
+    renderLeaderboard();
+
+    // GAME ENGINE
+    const canvas = document.getElementById('runnerCanvas');
     const ctx = canvas.getContext('2d');
     const scoreEl = document.getElementById('gameScore');
-    const highScoreEl = document.getElementById('highScore');
-    const overlay = document.getElementById('gameOverlay');
-    const overlayTitle = document.getElementById('overlayTitle');
-    const overlayDesc = document.getElementById('overlayDesc');
+    const nameDisplay = document.getElementById('playerNameDisplay');
+    const startOverlay = document.getElementById('startOverlay');
+    const gameOverOverlay = document.getElementById('gameOverOverlay');
+    const nameInput = document.getElementById('nameInput');
     const startBtn = document.getElementById('startBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const finalScoreEl = document.getElementById('finalScore');
+    const rankAlert = document.getElementById('rankAlert');
 
-    let score = 0;
-    let highScore = localStorage.getItem('fzboy_highscore') || 0;
-    highScoreEl.textContent = highScore;
+    let currentPlayer = localStorage.getItem('fzboy_player_name') || "";
+    if (currentPlayer) nameInput.value = currentPlayer;
 
     let isPlaying = false;
-    let player, bullets, enemies, spawnTimer;
-
-    function resetGame() {
-      player = { x: canvas.width / 2 - 15, y: canvas.height - 45, w: 30, h: 30, speed: 6 };
-      bullets = [];
-      enemies = [];
-      score = 0;
-      scoreEl.textContent = '0';
-      spawnTimer = 0;
-    }
+    let score = 0;
+    let frame = 0;
+    let speed = 4;
+    let player = { x: 185, y: 460, radius: 14, speed: 7 };
+    let obstacles = [];
+    let crystals = [];
+    let lanes = [80, 160, 240, 320];
 
     const keys = {};
-    window.addEventListener('keydown', e => {
-      keys[e.key] = true;
-      if (e.key === ' ' && isPlaying) {
-        shootBullet();
-        e.preventDefault();
-      }
-    });
+    window.addEventListener('keydown', e => keys[e.key] = true);
     window.addEventListener('keyup', e => keys[e.key] = false);
 
-    // Mobile buttons
-    document.getElementById('btnLeft').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
-    document.getElementById('btnLeft').addEventListener('touchend', () => keys['ArrowLeft'] = false);
-    document.getElementById('btnRight').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
-    document.getElementById('btnRight').addEventListener('touchend', () => keys['ArrowRight'] = false);
-    document.getElementById('btnShoot').addEventListener('touchstart', (e) => { e.preventDefault(); if (isPlaying) shootBullet(); });
-
-    function shootBullet() {
-      bullets.push({ x: player.x + player.w / 2 - 2, y: player.y, w: 4, h: 10, speed: 8 });
-    }
+    // Mobile touch
+    document.getElementById('touchLeft').addEventListener('touchstart', e => { e.preventDefault(); keys['ArrowLeft'] = true; });
+    document.getElementById('touchLeft').addEventListener('touchend', () => keys['ArrowLeft'] = false);
+    document.getElementById('touchRight').addEventListener('touchstart', e => { e.preventDefault(); keys['ArrowRight'] = true; });
+    document.getElementById('touchRight').addEventListener('touchend', () => keys['ArrowRight'] = false);
 
     startBtn.addEventListener('click', () => {
-      resetGame();
-      isPlaying = true;
-      overlay.classList.add('hidden');
-      loop();
+      const val = nameInput.value.trim();
+      if (!val) {
+        alert("Please enter your name!");
+        return;
+      }
+      currentPlayer = val;
+      localStorage.setItem('fzboy_player_name', currentPlayer);
+      nameDisplay.textContent = currentPlayer;
+      startOverlay.classList.add('hidden');
+      startGame();
     });
 
-    function gameOver() {
+    restartBtn.addEventListener('click', () => {
+      gameOverOverlay.classList.add('hidden');
+      startGame();
+    });
+
+    function startGame() {
+      score = 0;
+      frame = 0;
+      speed = 4;
+      player.x = canvas.width / 2;
+      obstacles = [];
+      crystals = [];
+      scoreEl.textContent = '0';
+      isPlaying = true;
+      loop();
+    }
+
+    function triggerGameOver() {
       isPlaying = false;
-      if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('fzboy_highscore', highScore);
-        highScoreEl.textContent = highScore;
+      finalScoreEl.textContent = score;
+      const madeTop = saveScore(currentPlayer, score);
+      if (madeTop) {
+        rankAlert.textContent = "🔥 CONGRATULATIONS! You entered the Top 3 Leaderboard!";
+      } else {
+        rankAlert.textContent = "Better luck next time! Keep pushing for Top 3!";
       }
-      overlayTitle.textContent = "GAME OVER!";
-      overlayDesc.textContent = `You scored ${score} points!`;
-      startBtn.textContent = "Play Again";
-      overlay.classList.remove('hidden');
+      gameOverOverlay.classList.remove('hidden');
     }
 
     function loop() {
       if (!isPlaying) return;
+      frame++;
 
-      // Update player
-      if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && player.x > 0) player.x -= player.speed;
-      if ((keys['ArrowRight'] || keys['d'] || keys['D']) && player.x < canvas.width - player.w) player.x += player.speed;
+      // Gradually increase difficulty
+      if (frame % 250 === 0) speed += 0.4;
 
-      // Spawn enemies
-      spawnTimer++;
-      if (spawnTimer % 45 === 0) {
-        const size = Math.random() * 20 + 20;
-        enemies.push({
-          x: Math.random() * (canvas.width - size),
-          y: -size,
-          w: size,
-          h: size,
-          speed: Math.random() * 2 + 2.5
-        });
+      // Handle player movement
+      if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && player.x > player.radius + 20) {
+        player.x -= player.speed;
+      }
+      if ((keys['ArrowRight'] || keys['d'] || keys['D']) && player.x < canvas.width - player.radius - 20) {
+        player.x += player.speed;
       }
 
-      // Update bullets
-      for (let i = bullets.length - 1; i >= 0; i--) {
-        bullets[i].y -= bullets[i].speed;
-        if (bullets[i].y < -10) bullets.splice(i, 1);
+      // Spawn Obstacles (Red barriers)
+      if (frame % 45 === 0) {
+        const laneX = lanes[Math.floor(Math.random() * lanes.length)];
+        obstacles.push({ x: laneX - 30, y: -40, w: 60, h: 18 });
       }
 
-      // Update enemies & collision
-      for (let i = enemies.length - 1; i >= 0; i--) {
-        enemies[i].y += enemies[i].speed;
+      // Spawn Energy Crystals (Cyan spheres)
+      if (frame % 60 === 0) {
+        const laneX = lanes[Math.floor(Math.random() * lanes.length)];
+        crystals.push({ x: laneX, y: -20, radius: 8 });
+      }
 
-        // Player collision
+      // Clear Canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Perspective Cyber Grid Lines
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.15)";
+      ctx.lineWidth = 1;
+      for (let l of lanes) {
+        ctx.beginPath();
+        ctx.moveTo(l, 0);
+        ctx.lineTo(l, canvas.height);
+        ctx.stroke();
+      }
+
+      // Update & Draw Obstacles
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.y += speed;
+
+        ctx.fillStyle = "#ef4444";
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = "#ef4444";
+        ctx.beginPath();
+        ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 6);
+        ctx.fill();
+
+        // Collision detection with player
         if (
-          player.x < enemies[i].x + enemies[i].w &&
-          player.x + player.w > enemies[i].x &&
-          player.y < enemies[i].y + enemies[i].h &&
-          player.y + player.h > enemies[i].y
+          player.x + player.radius > obs.x &&
+          player.x - player.radius < obs.x + obs.w &&
+          player.y + player.radius > obs.y &&
+          player.y - player.radius < obs.y + obs.h
         ) {
-          gameOver();
+          triggerGameOver();
           return;
         }
 
-        // Bullet hit enemy
-        for (let b = bullets.length - 1; b >= 0; b--) {
-          if (
-            bullets[b].x < enemies[i].x + enemies[i].w &&
-            bullets[b].x + bullets[b].w > enemies[i].x &&
-            bullets[b].y < enemies[i].y + enemies[i].h &&
-            bullets[b].y + bullets[b].h > enemies[i].y
-          ) {
-            enemies.splice(i, 1);
-            bullets.splice(b, 1);
-            score += 10;
-            scoreEl.textContent = score;
-            break;
-          }
-        }
-
-        // Bottom border
-        if (enemies[i] && enemies[i].y > canvas.height) {
-          enemies.splice(i, 1);
+        if (obs.y > canvas.height) {
+          obstacles.splice(i, 1);
+          score += 5;
+          scoreEl.textContent = score;
         }
       }
 
-      // Render Screen
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Update & Draw Crystals (+20 score bonus)
+      for (let i = crystals.length - 1; i >= 0; i--) {
+        const c = crystals[i];
+        c.y += speed;
 
-      // Draw Ship
+        ctx.fillStyle = "#22d3ee";
+        ctx.shadowBlur = 18;
+        ctx.shadowColor = "#22d3ee";
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Check if player collects crystal
+        const dist = Math.hypot(player.x - c.x, player.y - c.y);
+        if (dist < player.radius + c.radius) {
+          crystals.splice(i, 1);
+          score += 20;
+          scoreEl.textContent = score;
+          continue;
+        }
+
+        if (c.y > canvas.height) crystals.splice(i, 1);
+      }
+
+      // Draw Player (Glowing Cyan Cyber-Sphere)
       ctx.fillStyle = "#38bdf8";
-      ctx.beginPath();
-      ctx.moveTo(player.x + player.w / 2, player.y);
-      ctx.lineTo(player.x, player.y + player.h);
-      ctx.lineTo(player.x + player.w, player.y + player.h);
-      ctx.closePath();
-      ctx.shadowBlur = 10;
+      ctx.shadowBlur = 20;
       ctx.shadowColor = "#38bdf8";
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Draw Bullets
-      ctx.fillStyle = "#22d3ee";
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = "#22d3ee";
-      for (let b of bullets) {
-        ctx.fillRect(b.x, b.y, b.w, b.h);
-      }
-
-      // Draw Enemies
-      ctx.fillStyle = "#ef4444";
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = "#ef4444";
-      for (let en of enemies) {
-        ctx.beginPath();
-        ctx.arc(en.x + en.w / 2, en.y + en.h / 2, en.w / 2, 0, Math.PI * 2);
-        ctx.fill();
-      }
+      // Reset shadow blur
+      ctx.shadowBlur = 0;
 
       requestAnimationFrame(loop);
     }
