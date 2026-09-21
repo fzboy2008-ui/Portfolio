@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Icons & Auto Year
   lucide.createIcons();
+
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Run Animated Galaxy Canvas & Dynamic Typing
   initGalaxyCanvas();
   initTyping();
 });
 
-// Toast / Copy functionality
+// Toast notification
 function copyText(text, message) {
   navigator.clipboard.writeText(text).then(() => {
     const toast = document.getElementById("toast");
@@ -27,13 +26,13 @@ function copyText(text, message) {
   });
 }
 
-// Typing Text Effect for FZBOY
+// Typing Effect
 function initTyping() {
   const roles = [
     "Owner of SparkleMC Network",
     "Developer & CEO of Spark Bot",
     "All-In-One Discord Bot Creator",
-    "Server Infrastructure Architect"
+    "Minecraft Server Architect"
   ];
   const target = document.getElementById("typing-text");
   if (!target) return;
@@ -55,7 +54,7 @@ function initTyping() {
     let speed = deleting ? 30 : 65;
 
     if (!deleting && cIdx === current.length) {
-      speed = 2000;
+      speed = 2200;
       deleting = true;
     } else if (deleting && cIdx === 0) {
       deleting = false;
@@ -69,7 +68,7 @@ function initTyping() {
   type();
 }
 
-// Spiral Galaxy Canvas Animation
+// Spiral Rotating Galaxy Canvas
 function initGalaxyCanvas() {
   const canvas = document.getElementById("galaxyCanvas");
   if (!canvas) return;
@@ -83,16 +82,16 @@ function initGalaxyCanvas() {
     h = canvas.height = window.innerHeight;
   });
 
-  const starCount = Math.min(Math.floor(window.innerWidth / 12), 120);
+  const starCount = Math.min(Math.floor(window.innerWidth / 10), 140);
   const stars = [];
 
   for (let i = 0; i < starCount; i++) {
     stars.push({
       x: Math.random() * w,
       y: Math.random() * h,
-      radius: Math.random() * 1.6 + 0.4,
+      radius: Math.random() * 1.8 + 0.5,
       alpha: Math.random() * 0.8 + 0.2,
-      speed: Math.random() * 0.3 + 0.1,
+      speed: Math.random() * 0.35 + 0.1,
       color: Math.random() > 0.4 ? "#38bdf8" : "#818cf8"
     });
   }
@@ -100,15 +99,15 @@ function initGalaxyCanvas() {
   function render() {
     ctx.clearRect(0, 0, w, h);
 
-    // Subtle galaxy center nebula glow
-    const grad = ctx.createRadialGradient(w / 2, h / 3, 50, w / 2, h / 3, w * 0.6);
-    grad.addColorStop(0, "rgba(14, 116, 144, 0.08)");
-    grad.addColorStop(0.5, "rgba(30, 58, 138, 0.05)");
+    // Glowing Galactic Core
+    const grad = ctx.createRadialGradient(w / 2, h / 2.5, 40, w / 2, h / 2.5, w * 0.65);
+    grad.addColorStop(0, "rgba(6, 182, 212, 0.09)");
+    grad.addColorStop(0.5, "rgba(30, 58, 138, 0.06)");
     grad.addColorStop(1, "transparent");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
-    // Render twinkling floating stars
+    // Stars floating
     for (let i = 0; i < stars.length; i++) {
       const s = stars[i];
       s.y -= s.speed;
@@ -121,7 +120,7 @@ function initGalaxyCanvas() {
       ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
       ctx.fillStyle = s.color;
       ctx.globalAlpha = s.alpha * (0.6 + 0.4 * Math.sin(Date.now() * 0.003 + i));
-      ctx.shadowBlur = 6;
+      ctx.shadowBlur = 8;
       ctx.shadowColor = s.color;
       ctx.fill();
       ctx.globalAlpha = 1;
