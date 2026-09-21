@@ -1,17 +1,20 @@
-// Initialize Icons & Dynamic Data
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. Initialize Icons & Year
   lucide.createIcons();
-
   const yearEl = document.getElementById("year");
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Interactive Moving Particle Constellation Canvas
-  initParticles();
+  // 2. Start Animated Cyber Warp Background
+  initCyberWarp();
+
+  // 3. Start Typing Effect in Hero
+  initTypingEffect();
+
+  // 4. Initialize 3D Tilt for Cards
+  initTiltEffect();
 });
 
-// Toast notification function
+/* --- TOAST NOTIFICATION --- */
 function copyToClipboard(text, message) {
   navigator.clipboard.writeText(text).then(() => {
     const toast = document.getElementById("toast");
@@ -26,72 +29,148 @@ function copyToClipboard(text, message) {
         toast.classList.remove("translate-y-0", "opacity-100");
       }, 2200);
     }
-  }).catch(err => {
-    console.error("Copy failed: ", err);
   });
 }
 
-// Particle Canvas Implementation
-function initParticles() {
+/* --- DYNAMIC TYPING EFFECT --- */
+function initTypingEffect() {
+  const words = [
+    "Owner of SparkleMC Network",
+    "Developer & CEO of Spark Bot",
+    "All-In-One Bot Creator",
+    "Server Infrastructure Architect"
+  ];
+  const target = document.getElementById("typing-text");
+  if (!target) return;
+
+  let wordIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+
+  function type() {
+    const currentWord = words[wordIndex];
+    if (isDeleting) {
+      target.textContent = currentWord.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      target.textContent = currentWord.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    let typeSpeed = isDeleting ? 35 : 70;
+
+    if (!isDeleting && charIndex === currentWord.length) {
+      typeSpeed = 2200; // Pause at end of text
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      typeSpeed = 400; // Pause before typing new word
+    }
+
+    setTimeout(type, typeSpeed);
+  }
+
+  type();
+}
+
+/* --- CYBER WARP-SPEED CANVAS ANIMATION --- */
+function initCyberWarp() {
   const canvas = document.getElementById("particleCanvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
+  let w = (canvas.width = window.innerWidth);
+  let h = (canvas.height = window.innerHeight);
 
   window.addEventListener("resize", () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
   });
 
-  const particleCount = Math.min(Math.floor(window.innerWidth / 20), 65);
-  const particles = [];
+  const numStars = 120;
+  const stars = [];
 
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.45,
-      vy: (Math.random() - 0.5) * 0.45,
-      size: Math.random() * 2 + 1,
-      color: Math.random() > 0.5 ? "rgba(96, 165, 250," : "rgba(34, 211, 238,"
+  for (let i = 0; i < numStars; i++) {
+    stars.push({
+      x: (Math.random() - 0.5) * w * 1.5,
+      y: (Math.random() - 0.5) * h * 1.5,
+      z: Math.random() * w,
+      o: Math.random() * 0.7 + 0.3
     });
   }
 
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
+  let mouseX = 0;
+  let mouseY = 0;
 
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
+  window.addEventListener("mousemove", (e) => {
+    mouseX = (e.clientX - w / 2) * 0.05;
+    mouseY = (e.clientY - h / 2) * 0.05;
+  });
 
-      if (p.x < 0 || p.x > width) p.vx *= -1;
-      if (p.y < 0 || p.y > height) p.vy *= -1;
+  function render() {
+    ctx.fillStyle = "rgba(4, 13, 26, 0.35)";
+    ctx.fillRect(0, 0, w, h);
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = p.color + "0.6)";
-      ctx.fill();
+    const cx = w / 2 + mouseX;
+    const cy = h / 2 + mouseY;
 
-      // Connect particles close to each other
-      for (let j = i + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if (dist < 110) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(59, 130, 246, ${0.2 * (1 - dist / 110)})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
+    for (let i = 0; i < numStars; i++) {
+      const star = stars[i];
+      star.z -= 1.8; // Warp speed
+
+      if (star.z <= 0) {
+        star.z = w;
+        star.x = (Math.random() - 0.5) * w * 1.5;
+        star.y = (Math.random() - 0.5) * h * 1.5;
+      }
+
+      const k = 220 / star.z;
+      const px = star.x * k + cx;
+      const py = star.y * k + cy;
+
+      if (px >= 0 && px <= w && py >= 0 && py <= h) {
+        const size = Math.max((1 - star.z / w) * 2.8, 0.8);
+        const alpha = (1 - star.z / w) * star.o;
+
+        // Draw glowing laser star/streak
+        ctx.beginPath();
+        ctx.arc(px, py, size, 0, Math.PI * 2);
+        ctx.fillStyle = i % 3 === 0 ? `rgba(56, 189, 248, ${alpha})` : `rgba(129, 140, 248, ${alpha})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "#38bdf8";
+        ctx.fill();
       }
     }
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(render);
   }
 
-  animate();
+  render();
 }
+
+/* --- 3D TILT EFFECT FOR CARDS --- */
+function initTiltEffect() {
+  const cards = document.querySelectorAll(".glass-card");
+
+  cards.forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -6;
+      const rotateY = ((x - centerX) / centerX) * 6;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+    });
+  });
+}
+  
