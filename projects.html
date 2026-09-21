@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects & Ecosystem | FZBOY</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="galaxy-universe text-slate-100 min-h-screen relative overflow-x-hidden font-sans">
+
+  <!-- Canvas -->
+  <canvas id="galaxyCanvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
+
+  <!-- NAVBAR -->
+  <nav class="max-w-4xl mx-auto px-4 pt-6">
+    <div class="nav-glass-bar flex items-center justify-between px-6 py-3.5 rounded-2xl">
+      <a href="index.html" class="flex items-center gap-2 font-black tracking-wider text-xl">
+        <span class="gradient-text">FZBOY</span>
+      </a>
+      <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
+        <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
+        <a href="projects.html" class="text-cyan-300 font-bold">Showcase</a>
+        <a href="game.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Mini Game</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-10">
+    <div class="text-center space-y-2">
+      <h1 class="text-4xl font-extrabold text-white">
+        Project <span class="gradient-text">Ecosystem</span>
+      </h1>
+      <p class="text-sm text-slate-400 max-w-lg mx-auto">
+        Full technical breakdown of current servers, automation utilities, and live networks created and operated by FZBOY.
+      </p>
+    </div>
+
+    <!-- SPARK BOT DEEP DIVE -->
+    <div class="neon-outline-box rounded-3xl p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold text-cyan-400 tracking-wider">Discord Innovation</span>
+          <h2 class="text-3xl font-black text-white mt-1">Spark Bot</h2>
+        </div>
+        <a href="https://discord.com/oauth2/authorize?client_id=1539868740768763975" target="_blank" rel="noopener noreferrer" 
+           class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(37,99,235,0.4)] self-start sm:self-auto">
+          Add to Discord
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
+          <strong class="text-cyan-300 block text-sm mb-1">Advanced Protection</strong>
+          Automated raid protection, link filtering, and custom timeout triggers.
+        </div>
+        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
+          <strong class="text-cyan-300 block text-sm mb-1">Economy Engine</strong>
+          Gambling games, daily rewards, customizable currency, and shop integrations.
+        </div>
+        <div class="p-4 rounded-xl bg-[#061229] border border-blue-500/20">
+          <strong class="text-cyan-300 block text-sm mb-1">24/7 Hosting</strong>
+          Engineered for minimal latency, high-throughput commands, and 99.9% uptime.
+        </div>
+      </div>
+    </div>
+
+    <!-- SPARKLEMC MINECRAFT DEEP DIVE -->
+    <div class="neon-outline-box rounded-3xl p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-xs uppercase font-extrabold text-blue-400 tracking-wider">Minecraft Network</span>
+          <h2 class="text-3xl font-black text-white mt-1">SparkleMC SMP</h2>
+        </div>
+        <a href="https://www.sparklemc.fun" target="_blank" rel="noopener noreferrer" 
+           class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(79,70,229,0.4)] self-start sm:self-auto">
+          Visit sparklemc.fun
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
+          <strong class="text-indigo-300 block text-sm mb-1">Cross-Play Ready</strong>
+          Play simultaneously from Java Edition (PC) or Bedrock Edition (Android/iOS/Console).
+        </div>
+        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
+          <strong class="text-indigo-300 block text-sm mb-1">Custom Features</strong>
+          Player auctions, land claims, rank ladders, and balanced PvP protection.
+        </div>
+        <div class="p-4 rounded-xl bg-[#061229] border border-indigo-500/20">
+          <strong class="text-indigo-300 block text-sm mb-1">Live Connection</strong>
+          Direct link: <code class="text-cyan-300">play.sparklemc.fun:19133</code>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
