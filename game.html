@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flappy Bird | FZBOY Arcade</title>
+  <title>FZBOY Arcade | 3-in-1 Mini Games</title>
   
+  <!-- Tailwind CSS & Lucide Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css" />
   
   <style>
-    #flappyCanvas {
-      background: radial-gradient(circle at 50% 35%, #0c234b 0%, #040e21 65%, #010612 100%);
+    .arcade-canvas {
+      background: radial-gradient(circle at 50% 30%, #07193b 0%, #030a1c 65%, #01040a 100%);
       border: 2px solid rgba(56, 189, 248, 0.45);
       box-shadow: 0 0 35px rgba(6, 182, 212, 0.35);
       border-radius: 1.25rem;
@@ -30,25 +31,38 @@
       <div class="flex items-center gap-4 text-xs sm:text-sm font-semibold">
         <a href="index.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Home</a>
         <a href="projects.html" class="text-slate-400 hover:text-cyan-300 transition-colors">Showcase</a>
-        <a href="game.html" class="text-cyan-300 font-bold">Flappy Bird</a>
+        <a href="game.html" class="text-cyan-300 font-bold">Arcade (3 Games)</a>
       </div>
     </div>
   </nav>
 
   <main class="max-w-4xl mx-auto px-4 py-8 space-y-6 text-center">
     
-    <!-- TITLE -->
+    <!-- HEADER -->
     <div class="space-y-1">
       <h1 class="text-3xl sm:text-4xl font-extrabold text-white">
-        Cosmic <span class="gradient-text">Flappy Bird</span> 🐦
+        FZBOY <span class="gradient-text">Retro Arcade</span> 🕹️
       </h1>
       <p class="text-xs sm:text-sm text-slate-400">
-        Tap, click, or press <strong>Spacebar</strong> to fly! Dodge the cyber pillars.
+        Choose your game, hit Start, and beat your own personal high score!
       </p>
     </div>
 
-    <!-- SCOREBOARD (CURRENT SCORE & PERSONAL BEST) -->
-    <div class="flex items-center justify-center gap-5 text-sm font-mono">
+    <!-- GAME SELECTOR TABS -->
+    <div class="flex items-center justify-center gap-2 sm:gap-3 max-w-md mx-auto">
+      <button onclick="switchGame('dino')" id="tab-dino" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]">
+        🦖 Cyber Dino
+      </button>
+      <button onclick="switchGame('flappy')" id="tab-flappy" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all bg-[#081836] border border-cyan-500/30 text-slate-300 hover:text-white">
+        🐦 Flappy Bird
+      </button>
+      <button onclick="switchGame('blaster')" id="tab-blaster" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all bg-[#081836] border border-cyan-500/30 text-slate-300 hover:text-white">
+        🚀 Space Blaster
+      </button>
+    </div>
+
+    <!-- SCOREBOARD -->
+    <div class="flex items-center justify-center gap-6 text-sm font-mono">
       <div class="px-5 py-2 rounded-xl bg-[#06142e] border border-cyan-500/40 text-cyan-300">
         SCORE: <span id="currentScore" class="font-bold text-white text-lg ml-1">0</span>
       </div>
@@ -59,15 +73,15 @@
       </div>
     </div>
 
-    <!-- CANVAS WRAPPER -->
-    <div class="relative inline-block max-w-full" id="canvasWrapper">
-      <canvas id="flappyCanvas" width="380" height="520" class="w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
+    <!-- CANVAS CONTAINER -->
+    <div class="relative inline-block max-w-full" id="canvasContainer">
+      <canvas id="arcadeCanvas" width="380" height="480" class="arcade-canvas w-full max-w-[400px] mx-auto block cursor-pointer"></canvas>
 
-      <!-- TAP TO START HINT -->
+      <!-- START HINT OVERLAY -->
       <div id="startHint" class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-        <div class="p-4 rounded-2xl bg-black/65 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1.5 shadow-xl">
-          <p class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR PRESS SPACEBAR</p>
-          <p class="text-xs text-slate-300">Fly bird through the gates</p>
+        <div class="p-4 rounded-2xl bg-black/75 backdrop-blur-sm border border-cyan-400/40 text-center space-y-1.5 shadow-xl">
+          <p id="hintTitle" class="text-sm font-extrabold text-cyan-300 animate-pulse">TAP OR PRESS SPACEBAR</p>
+          <p id="hintSub" class="text-xs text-slate-300">Jump over cyber obstacles</p>
         </div>
       </div>
 
@@ -77,17 +91,24 @@
         
         <div class="space-y-1">
           <p class="text-sm text-slate-300">
-            Score: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
+            Final Score: <strong id="finalScore" class="text-cyan-300 font-mono text-2xl">0</strong>
           </p>
           <p class="text-xs text-yellow-300 font-mono">
-            Best Record: <span id="finalHighScore">0</span>
+            Your Best: <span id="finalHighScore">0</span>
           </p>
         </div>
 
-        <button id="btnPlayAgain" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
+        <button onclick="startGame()" class="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-extrabold text-sm shadow-[0_0_25px_rgba(6,182,212,0.5)] hover:scale-105 active:scale-95 transition-all">
           Play Again
         </button>
       </div>
+    </div>
+
+    <!-- MOBILE HELPER TOUCH CONTROLS (ONLY FOR BLASTER) -->
+    <div id="blasterControls" class="hidden flex items-center justify-center gap-6 pt-1">
+      <button id="btnLeft" class="px-6 py-3 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">◀ Left</button>
+      <button id="btnFire" class="px-8 py-3 rounded-xl bg-blue-600 text-white font-bold active:bg-blue-400">🔥 Fire</button>
+      <button id="btnRight" class="px-6 py-3 rounded-xl bg-[#081c3d] border border-cyan-500/40 text-cyan-300 font-bold active:bg-cyan-500 active:text-black">Right ▶</button>
     </div>
 
   </main>
@@ -95,146 +116,341 @@
   <script>
     lucide.createIcons();
 
-    /* ==========================================================
-       FLAPPY BIRD ENGINE (CLASSIC BIRD & PERSONAL HIGH SCORE)
-       ========================================================== */
-    const canvas = document.getElementById('flappyCanvas');
+    const canvas = document.getElementById('arcadeCanvas');
     const ctx = canvas.getContext('2d');
     const currentScoreEl = document.getElementById('currentScore');
     const highScoreEl = document.getElementById('highScore');
     const finalScoreEl = document.getElementById('finalScore');
     const finalHighScoreEl = document.getElementById('finalHighScore');
     const startHint = document.getElementById('startHint');
+    const hintTitle = document.getElementById('hintTitle');
+    const hintSub = document.getElementById('hintSub');
     const gameOverOverlay = document.getElementById('gameOverOverlay');
-    const btnPlayAgain = document.getElementById('btnPlayAgain');
+    const blasterControls = document.getElementById('blasterControls');
 
-    // Personal High Score from Local Storage
-    let highScore = parseInt(localStorage.getItem('fzboy_flappy_personal_best') || '0', 10);
-    highScoreEl.textContent = highScore;
-
+    let activeGame = 'dino'; // 'dino' | 'flappy' | 'blaster'
     let isPlaying = false;
-    let waitingToFlap = true;
+    let waitingToStart = true;
     let score = 0;
     let frame = 0;
+    let animationId = null;
 
-    // Bird Object
-    let bird = {
-      x: 70,
-      y: 220,
-      radius: 13,
-      vy: 0,
-      gravity: 0.28,
-      jump: -5.8,
-      wingAnim: 0
-    };
-
-    let pipes = [];
-    let particles = [];
-    const pipeGap = 140;
-    const pipeWidth = 52;
-    const pipeSpeed = 2.4;
-
-    function resetGame() {
-      bird.y = canvas.height / 2 - 10;
-      bird.vy = 0;
-      bird.wingAnim = 0;
-      pipes = [];
-      particles = [];
-      score = 0;
-      frame = 0;
-      currentScoreEl.textContent = '0';
-      waitingToFlap = true;
-      isPlaying = true;
-      startHint.classList.remove('hidden');
-      gameOverOverlay.classList.add('hidden');
-      drawIdle();
-    }
-
-    function flap() {
-      if (!isPlaying) return;
-      if (waitingToFlap) {
-        waitingToFlap = false;
-        startHint.classList.add('hidden');
-        loop();
-      }
-      bird.vy = bird.jump;
-
-      // Small feathers / wind dust particles
-      for (let i = 0; i < 5; i++) {
-        particles.push({
-          x: bird.x - 8,
-          y: bird.y,
-          vx: -(Math.random() * 2 + 1),
-          vy: (Math.random() - 0.5) * 2,
-          life: 1,
-          size: Math.random() * 2.5 + 1.5,
-          color: Math.random() > 0.4 ? "#facc15" : "#38bdf8"
-        });
-      }
-    }
-
-    // Input Events
+    // Keys state
+    const keys = {};
     window.addEventListener('keydown', e => {
-      if (e.code === 'Space' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
-        flap();
+      keys[e.key] = true;
+      if (e.code === 'Space' || e.key === 'ArrowUp') {
+        handleMainAction();
         e.preventDefault();
       }
     });
+    window.addEventListener('keyup', e => keys[e.key] = false);
 
-    canvas.addEventListener('mousedown', flap);
+    canvas.addEventListener('mousedown', handleMainAction);
     canvas.addEventListener('touchstart', e => {
       e.preventDefault();
-      flap();
+      handleMainAction();
     });
 
-    btnPlayAgain.addEventListener('click', () => {
-      resetGame();
-    });
+    function getHighScoreKey() {
+      return `fzboy_best_${activeGame}`;
+    }
 
-    function triggerCrash() {
+    function loadHighScore() {
+      const best = parseInt(localStorage.getItem(getHighScoreKey()) || '0', 10);
+      highScoreEl.textContent = best;
+      return best;
+    }
+
+    function saveHighScore() {
+      const best = loadHighScore();
+      if (score > best) {
+        localStorage.setItem(getHighScoreKey(), score);
+        highScoreEl.textContent = score;
+      }
+      finalHighScoreEl.textContent = Math.max(score, best);
+    }
+
+    /* SWITCH ACTIVE GAME */
+    function switchGame(gameType) {
+      activeGame = gameType;
+      ['dino', 'flappy', 'blaster'].forEach(g => {
+        const tab = document.getElementById(`tab-${g}`);
+        if (g === gameType) {
+          tab.className = "flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)]";
+        } else {
+          tab.className = "flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all bg-[#081836] border border-cyan-500/30 text-slate-300 hover:text-white";
+        }
+      });
+
+      if (gameType === 'blaster') {
+        blasterControls.classList.remove('hidden');
+      } else {
+        blasterControls.classList.add('hidden');
+      }
+
+      loadHighScore();
+      resetCurrentGame();
+    }
+
+    function handleMainAction() {
+      if (!isPlaying) return;
+      if (waitingToStart) {
+        waitingToStart = false;
+        startHint.classList.add('hidden');
+        gameLoop();
+      }
+
+      if (activeGame === 'dino') {
+        dinoJump();
+      } else if (activeGame === 'flappy') {
+        flappyFlap();
+      } else if (activeGame === 'blaster') {
+        blasterShoot();
+      }
+    }
+
+    function triggerGameOver() {
       isPlaying = false;
       finalScoreEl.textContent = score;
-
-      // Update Personal Best
-      if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('fzboy_flappy_personal_best', highScore);
-        highScoreEl.textContent = highScore;
-      }
-      finalHighScoreEl.textContent = highScore;
-
+      saveHighScore();
       gameOverOverlay.classList.remove('hidden');
+      if (animationId) cancelAnimationFrame(animationId);
     }
 
-    function drawIdle() {
-      if (!waitingToFlap) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBackgroundGrid();
-      drawBird();
-      requestAnimationFrame(drawIdle);
+    function resetCurrentGame() {
+      if (animationId) cancelAnimationFrame(animationId);
+      gameOverOverlay.classList.add('hidden');
+      startHint.classList.remove('hidden');
+      score = 0;
+      frame = 0;
+      currentScoreEl.textContent = '0';
+      waitingToStart = true;
+      isPlaying = true;
+
+      if (activeGame === 'dino') {
+        initDino();
+        hintTitle.textContent = "TAP OR SPACEBAR TO JUMP";
+        hintSub.textContent = "Dodge cyber laser cacti";
+      } else if (activeGame === 'flappy') {
+        initFlappy();
+        hintTitle.textContent = "TAP OR SPACEBAR TO FLY";
+        hintSub.textContent = "Flap bird through glowing pipes";
+      } else if (activeGame === 'blaster') {
+        initBlaster();
+        hintTitle.textContent = "TAP / SPACEBAR TO FIRE";
+        hintSub.textContent = "Arrow keys / A-D to move ship";
+      }
+
+      drawIdleScreen();
     }
 
-    function drawBackgroundGrid() {
-      ctx.strokeStyle = "rgba(56, 189, 248, 0.08)";
-      ctx.lineWidth = 1;
-      for (let x = 0; x < canvas.width; x += 35) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
+    function startGame() {
+      resetCurrentGame();
+    }
+
+    /* ==========================================================
+       GAME 1: CYBER DINO RUNNER
+       ========================================================== */
+    let dino, dinoObstacles, groundY;
+
+    function initDino() {
+      groundY = canvas.height - 70;
+      dino = {
+        x: 45,
+        y: groundY - 36,
+        w: 30,
+        h: 36,
+        vy: 0,
+        gravity: 0.75,
+        jumpPower: -12.5,
+        isGrounded: true
+      };
+      dinoObstacles = [];
+    }
+
+    function dinoJump() {
+      if (dino.isGrounded) {
+        dino.vy = dino.jumpPower;
+        dino.isGrounded = false;
       }
     }
 
-    // DRAW ANIMATED FLAPPY BIRD 🐦
-    function drawBird() {
+    function updateDino() {
+      dino.vy += dino.gravity;
+      dino.y += dino.vy;
+
+      if (dino.y >= groundY - dino.h) {
+        dino.y = groundY - dino.h;
+        dino.vy = 0;
+        dino.isGrounded = true;
+      }
+
+      // Spawning obstacles
+      if (frame % Math.max(75 - Math.floor(score / 5), 45) === 0) {
+        dinoObstacles.push({
+          x: canvas.width,
+          y: groundY - 32,
+          w: 18,
+          h: 32,
+          color: '#ef4444'
+        });
+      }
+
+      // Move obstacles
+      const dinoSpeed = 4.2 + (score * 0.05);
+      for (let i = dinoObstacles.length - 1; i >= 0; i--) {
+        const obs = dinoObstacles[i];
+        obs.x -= dinoSpeed;
+
+        // Collision Check
+        if (
+          dino.x + dino.w - 6 > obs.x &&
+          dino.x + 6 < obs.x + obs.w &&
+          dino.y + dino.h > obs.y
+        ) {
+          triggerGameOver();
+          return;
+        }
+
+        if (obs.x + obs.w < -10) {
+          dinoObstacles.splice(i, 1);
+          score += 1;
+          currentScoreEl.textContent = score;
+        }
+      }
+    }
+
+    function drawDino() {
+      // Ground
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(canvas.width, groundY);
+      ctx.stroke();
+
+      // Draw Dino (Cyber Rex)
+      ctx.fillStyle = "#22d3ee";
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#22d3ee";
+      // Body
+      ctx.fillRect(dino.x, dino.y + 10, dino.w - 6, dino.h - 16);
+      // Head
+      ctx.fillRect(dino.x + 10, dino.y, 16, 14);
+      // Eye
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(dino.x + 18, dino.y + 3, 3, 3);
+      // Legs
+      ctx.fillStyle = "#22d3ee";
+      ctx.fillRect(dino.x + 4, dino.y + dino.h - 6, 4, 6);
+      ctx.fillRect(dino.x + dino.w - 12, dino.y + dino.h - 6, 4, 6);
+
+      // Obstacles (Red Neon Cacti)
+      for (let obs of dinoObstacles) {
+        ctx.fillStyle = obs.color;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = obs.color;
+        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+        ctx.fillRect(obs.x - 4, obs.y + 8, 4, 10);
+        ctx.fillRect(obs.x + obs.w, obs.y + 12, 4, 10);
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    /* ==========================================================
+       GAME 2: COSMIC FLAPPY BIRD
+       ========================================================== */
+    let bird, flappyPipes;
+    const pipeGap = 135;
+    const pipeWidth = 52;
+
+    function initFlappy() {
+      bird = {
+        x: 65,
+        y: canvas.height / 2 - 10,
+        radius: 13,
+        vy: 0,
+        gravity: 0.28,
+        jump: -5.8,
+        wingAnim: 0
+      };
+      flappyPipes = [];
+    }
+
+    function flappyFlap() {
+      bird.vy = bird.jump;
+    }
+
+    function updateFlappy() {
+      bird.vy += bird.gravity;
+      bird.y += bird.vy;
+
+      if (bird.y + bird.radius >= canvas.height || bird.y - bird.radius <= 0) {
+        triggerGameOver();
+        return;
+      }
+
+      if (frame % 85 === 0) {
+        const topH = Math.floor(Math.random() * (canvas.height - pipeGap - 90)) + 40;
+        flappyPipes.push({
+          x: canvas.width,
+          top: topH,
+          bottom: canvas.height - (topH + pipeGap),
+          scored: false
+        });
+      }
+
+      for (let i = flappyPipes.length - 1; i >= 0; i--) {
+        const p = flappyPipes[i];
+        p.x -= 2.4;
+
+        const bottomY = canvas.height - p.bottom;
+
+        // Collision Check
+        if (
+          bird.x + bird.radius > p.x &&
+          bird.x - bird.radius < p.x + pipeWidth &&
+          (bird.y - bird.radius < p.top || bird.y + bird.radius > bottomY)
+        ) {
+          triggerGameOver();
+          return;
+        }
+
+        if (!p.scored && p.x + pipeWidth < bird.x) {
+          p.scored = true;
+          score += 1;
+          currentScoreEl.textContent = score;
+        }
+
+        if (p.x + pipeWidth < -10) flappyPipes.splice(i, 1);
+      }
+    }
+
+    function drawFlappy() {
+      // Draw Pipes
+      for (let p of flappyPipes) {
+        const bottomY = canvas.height - p.bottom;
+
+        ctx.fillStyle = "#0c2854";
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#38bdf8";
+
+        ctx.fillRect(p.x, 0, pipeWidth, p.top);
+        ctx.strokeRect(p.x, -2, pipeWidth, p.top + 2);
+
+        ctx.fillRect(p.x, bottomY, pipeWidth, p.bottom);
+        ctx.strokeRect(p.x, bottomY, pipeWidth, p.bottom + 2);
+      }
+
+      // Draw Bird
       ctx.save();
       ctx.translate(bird.x, bird.y);
-
-      // Smooth tilt rotation based on vertical speed
       const tilt = Math.min(Math.max(bird.vy * 3.5, -25), 60);
       ctx.rotate((tilt * Math.PI) / 180);
 
-      // Bird Body (Golden Yellow Circle)
       ctx.fillStyle = "#facc15";
       ctx.shadowBlur = 12;
       ctx.shadowColor = "#facc15";
@@ -242,139 +458,188 @@
       ctx.arc(0, 0, bird.radius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Belly / Light Chest
-      ctx.fillStyle = "#fef08a";
-      ctx.beginPath();
-      ctx.arc(-2, 3, bird.radius * 0.65, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Wing (Flapping Animation)
-      bird.wingAnim += 0.15;
-      const wingOffset = Math.sin(bird.wingAnim) * 4;
+      // Wing
+      bird.wingAnim += 0.2;
       ctx.fillStyle = "#eab308";
       ctx.beginPath();
-      ctx.ellipse(-4, wingOffset, 6, 4, 0, 0, Math.PI * 2);
+      ctx.ellipse(-4, Math.sin(bird.wingAnim) * 4, 6, 4, 0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Eye (White with black pupil)
+      // Eye & Beak
       ctx.fillStyle = "#ffffff";
       ctx.beginPath();
-      ctx.arc(5, -4, 4.5, 0, Math.PI * 2);
+      ctx.arc(5, -4, 4, 0, Math.PI * 2);
       ctx.fill();
-
       ctx.fillStyle = "#000000";
       ctx.beginPath();
       ctx.arc(6.5, -4, 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Beak (Orange Triangle)
       ctx.fillStyle = "#f97316";
       ctx.beginPath();
       ctx.moveTo(11, -2);
-      ctx.lineTo(19, 1);
+      ctx.lineTo(18, 1);
       ctx.lineTo(11, 4);
       ctx.closePath();
       ctx.fill();
 
       ctx.restore();
+      ctx.shadowBlur = 0;
     }
 
-    function loop() {
-      if (!isPlaying || waitingToFlap) return;
-      frame++;
+    /* ==========================================================
+       GAME 3: SPACE BLASTER / ASTEROID SHOOTER
+       ========================================================== */
+    let ship, lasers, enemies;
 
-      // Bird Physics
-      bird.vy += bird.gravity;
-      bird.y += bird.vy;
+    function initBlaster() {
+      ship = {
+        x: canvas.width / 2 - 14,
+        y: canvas.height - 50,
+        w: 28,
+        h: 28,
+        speed: 6
+      };
+      lasers = [];
+      enemies = [];
+    }
 
-      // Floor & Ceiling Collision
-      if (bird.y + bird.radius >= canvas.height || bird.y - bird.radius <= 0) {
-        triggerCrash();
-        return;
-      }
+    function blasterShoot() {
+      lasers.push({
+        x: ship.x + ship.w / 2 - 2,
+        y: ship.y,
+        w: 4,
+        h: 12,
+        speed: 8
+      });
+    }
 
-      // Spawning Pipes
-      if (frame % 85 === 0) {
-        const topHeight = Math.floor(Math.random() * (canvas.height - pipeGap - 90)) + 40;
-        pipes.push({
-          x: canvas.width,
-          top: topHeight,
-          bottom: canvas.height - (topHeight + pipeGap),
-          scored: false
+    // Touch controls for mobile
+    document.getElementById('btnLeft').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; });
+    document.getElementById('btnLeft').addEventListener('touchend', () => keys['ArrowLeft'] = false);
+    document.getElementById('btnRight').addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; });
+    document.getElementById('btnRight').addEventListener('touchend', () => keys['ArrowRight'] = false);
+    document.getElementById('btnFire').addEventListener('touchstart', (e) => { e.preventDefault(); if (isPlaying) blasterShoot(); });
+
+    function updateBlaster() {
+      if ((keys['ArrowLeft'] || keys['a'] || keys['A']) && ship.x > 5) ship.x -= ship.speed;
+      if ((keys['ArrowRight'] || keys['d'] || keys['D']) && ship.x < canvas.width - ship.w - 5) ship.x += ship.speed;
+
+      // Spawn Enemies
+      if (frame % 40 === 0) {
+        const size = Math.random() * 15 + 18;
+        enemies.push({
+          x: Math.random() * (canvas.width - size - 10) + 5,
+          y: -size,
+          w: size,
+          h: size,
+          speed: Math.random() * 1.5 + 2.5
         });
       }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBackgroundGrid();
+      // Update Lasers
+      for (let i = lasers.length - 1; i >= 0; i--) {
+        lasers[i].y -= lasers[i].speed;
+        if (lasers[i].y < -15) lasers.splice(i, 1);
+      }
 
-      // Draw Pipes
-      for (let i = pipes.length - 1; i >= 0; i--) {
-        const p = pipes[i];
-        p.x -= pipeSpeed;
+      // Update Enemies & Hit Detection
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const en = enemies[i];
+        en.y += en.speed;
 
-        // Top Pipe
-        ctx.fillStyle = "#081b3b";
-        ctx.strokeStyle = "#38bdf8";
-        ctx.lineWidth = 2;
-        ctx.fillRect(p.x, 0, pipeWidth, p.top);
-        ctx.strokeRect(p.x, -2, pipeWidth, p.top + 2);
-
-        // Bottom Pipe
-        const bottomY = canvas.height - p.bottom;
-        ctx.fillRect(p.x, bottomY, pipeWidth, p.bottom);
-        ctx.strokeRect(p.x, bottomY, pipeWidth, p.bottom + 2);
-
-        // Glowing Pipe Rim Caps
-        ctx.fillStyle = "#06b6d4";
-        ctx.fillRect(p.x - 2, p.top - 7, pipeWidth + 4, 7);
-        ctx.fillRect(p.x - 2, bottomY, pipeWidth + 4, 7);
-
-        // Circular Bird Collision Check
+        // Player Collision
         if (
-          bird.x + bird.radius > p.x &&
-          bird.x - bird.radius < p.x + pipeWidth &&
-          (bird.y - bird.radius < p.top || bird.y + bird.radius > bottomY)
+          ship.x < en.x + en.w &&
+          ship.x + ship.w > en.x &&
+          ship.y < en.y + en.h &&
+          ship.y + ship.h > en.y
         ) {
-          triggerCrash();
+          triggerGameOver();
           return;
         }
 
-        // Score increment
-        if (!p.scored && p.x + pipeWidth < bird.x) {
-          p.scored = true;
-          score++;
-          currentScoreEl.textContent = score;
+        // Laser Hits
+        for (let l = lasers.length - 1; l >= 0; l--) {
+          if (
+            lasers[l].x < en.x + en.w &&
+            lasers[l].x + lasers[l].w > en.x &&
+            lasers[l].y < en.y + en.h &&
+            lasers[l].y + lasers[l].h > en.y
+          ) {
+            enemies.splice(i, 1);
+            lasers.splice(l, 1);
+            score += 10;
+            currentScoreEl.textContent = score;
+            break;
+          }
         }
 
-        if (p.x + pipeWidth < -10) pipes.splice(i, 1);
+        if (en.y > canvas.height) enemies.splice(i, 1);
       }
-
-      // Draw Particles
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const pt = particles[i];
-        pt.x += pt.vx;
-        pt.y += pt.vy;
-        pt.life -= 0.04;
-
-        if (pt.life <= 0) {
-          particles.splice(i, 1);
-          continue;
-        }
-
-        ctx.fillStyle = pt.color;
-        ctx.globalAlpha = pt.life;
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      drawBird();
-      requestAnimationFrame(loop);
     }
 
-    // Start in ready state
-    resetGame();
+    function drawBlaster() {
+      // Draw Ship
+      ctx.fillStyle = "#38bdf8";
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = "#38bdf8";
+      ctx.beginPath();
+      ctx.moveTo(ship.x + ship.w / 2, ship.y);
+      ctx.lineTo(ship.x, ship.y + ship.h);
+      ctx.lineTo(ship.x + ship.w, ship.y + ship.h);
+      ctx.closePath();
+      ctx.fill();
+
+      // Lasers
+      ctx.fillStyle = "#00f0ff";
+      ctx.shadowColor = "#00f0ff";
+      for (let l of lasers) {
+        ctx.fillRect(l.x, l.y, l.w, l.h);
+      }
+
+      // Enemies
+      ctx.fillStyle = "#ef4444";
+      ctx.shadowColor = "#ef4444";
+      for (let en of enemies) {
+        ctx.beginPath();
+        ctx.arc(en.x + en.w / 2, en.y + en.h / 2, en.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+    }
+
+    /* ==========================================================
+       MAIN LOOP & RENDER
+       ========================================================== */
+    function drawIdleScreen() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (activeGame === 'dino') drawDino();
+      else if (activeGame === 'flappy') drawFlappy();
+      else if (activeGame === 'blaster') drawBlaster();
+    }
+
+    function gameLoop() {
+      if (!isPlaying || waitingToStart) return;
+      frame++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (activeGame === 'dino') {
+        updateDino();
+        drawDino();
+      } else if (activeGame === 'flappy') {
+        updateFlappy();
+        drawFlappy();
+      } else if (activeGame === 'blaster') {
+        updateBlaster();
+        drawBlaster();
+      }
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    // Initialize with Dino on start
+    switchGame('dino');
   </script>
 </body>
 </html>
