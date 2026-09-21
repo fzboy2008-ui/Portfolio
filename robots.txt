@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Allow: /avatar.png
+Sitemap: https://fzboy2008-ui.github.io/sitemap.xml
