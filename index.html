@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FZ BOY | Owner of SparkleMC & Creator of Spark Bot</title>
-  <meta name="description" content="Official portfolio of FZ BOY - Owner of SparkleMC Network and Developer/CEO of Spark Discord Bot." />
+  <title>FZBOY | Official Portfolio & Hub</title>
+  <meta name="description" content="Official portfolio of FZBOY - Owner of SparkleMC Network and Developer/CEO of Spark Discord Bot." />
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -13,169 +13,172 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-animated text-slate-200 min-h-screen relative overflow-x-hidden font-sans selection:bg-cyan-500 selection:text-slate-950">
+<body class="galaxy-bg text-slate-100 min-h-screen relative overflow-x-hidden font-sans selection:bg-blue-600 selection:text-cyan-200">
 
-  <!-- Interactive Warp-Speed Canvas -->
-  <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
+  <!-- Interactive Galaxy Animation Canvas -->
+  <canvas id="galaxyCanvas" class="fixed inset-0 pointer-events-none -z-10"></canvas>
 
   <!-- Notification Toast -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 px-4 py-3 rounded-xl bg-slate-900/95 border border-cyan-500/50 text-white text-sm shadow-2xl backdrop-blur-md">
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-28 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#081226]/95 border border-cyan-400/50 text-white text-sm shadow-[0_0_25px_rgba(6,182,212,0.3)] backdrop-blur-md">
     <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400"></i>
-    <span id="toast-msg">Copied to clipboard!</span>
+    <span id="toast-msg">Copied!</span>
   </div>
 
   <!-- Main Container -->
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-20 space-y-12">
 
-    <!-- HERO SECTION -->
-    <header class="glass-card rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
-      <!-- Glow Accent Line -->
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent"></div>
-
-      <!-- Avatar with Neon Pulse -->
-      <div class="relative w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-6 floating-elem">
-        <img 
-          src="https://api.dicebear.com/7.x/bottts/svg?seed=FZBOY2008" 
-          alt="FZ BOY" 
-          class="relative w-full h-full rounded-full object-cover border-2 border-cyan-400/60 bg-slate-900 neon-avatar"
-        />
+    <!-- HERO SECTION WITH GLOWING OUTLINE -->
+    <header class="glow-border-card rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+      
+      <!-- Profile Picture with Rotating Neon Ring -->
+      <div class="relative w-32 h-32 sm:w-36 sm:h-36 mx-auto mb-6">
+        <div class="neon-ring-wrapper">
+          <!-- Apni image upload karke repo me naam 'avatar.png' rakh dena -->
+          <img 
+            id="userAvatar"
+            src="avatar.png" 
+            onerror="this.onerror=null; this.src='https://api.dicebear.com/7.x/bottts/svg?seed=FZBOY';" 
+            alt="FZBOY Avatar" 
+            class="w-full h-full rounded-full object-cover bg-[#040b17] relative z-10 border border-cyan-400/40"
+          />
+        </div>
       </div>
 
-      <!-- Main Name -->
-      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-2">
-        FZ <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">BOY</span>
+      <!-- Main Name: FZBOY -->
+      <h1 class="text-4xl sm:text-6xl font-black tracking-tight mb-2 text-white">
+        <span class="gradient-text">FZBOY</span>
       </h1>
       
-      <!-- Dynamic Typing Text Banner -->
+      <!-- Animated Typing Subtitle -->
       <div class="h-8 flex items-center justify-center mb-4">
         <p class="text-cyan-300 font-mono font-semibold text-sm sm:text-base tracking-wide">
-          <span id="typing-text"></span><span class="typing-cursor">&nbsp;</span>
+          <span id="typing-text"></span><span class="cursor-blink">|</span>
         </p>
       </div>
 
       <p class="text-slate-300 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed mb-6">
-        Building high-performance Minecraft servers and crafting custom Discord bots. Tech enthusiast, server owner, and community architect.
+        Architecting immersive Minecraft experiences and engineering all-in-one Discord bot solutions. Community creator and developer.
       </p>
 
-      <!-- Discord User ID Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/80 border border-blue-500/30 text-xs sm:text-sm font-mono text-cyan-300 mb-8">
+      <!-- Discord ID Badge with 1-Click Copy -->
+      <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#061126]/90 border border-blue-500/40 text-xs sm:text-sm font-mono text-cyan-300 shadow-[0_0_15px_rgba(59,130,246,0.2)] mb-8">
         <i data-lucide="hash" class="w-4 h-4 text-blue-400"></i>
-        <span>Discord ID: <strong class="select-all">1266728371719508062</strong></span>
-        <button onclick="copyToClipboard('1266728371719508062', 'Discord ID copied!')" class="ml-2 hover:text-white transition-colors" title="Copy ID">
+        <span>Discord ID: <strong class="select-all text-white">1266728371719508062</strong></span>
+        <button onclick="copyText('1266728371719508062', 'Discord ID copied!')" class="ml-2 text-cyan-400 hover:text-white transition-colors" title="Copy ID">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i>
         </button>
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-wrap items-center justify-center gap-3.5">
+      <div class="flex flex-wrap items-center justify-center gap-4">
         <a href="https://discord.gg/5SjbYGKBG7" target="_blank" rel="noopener noreferrer" 
-           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-cyan-500/20 hover:scale-105 active:scale-95">
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-bold text-sm transition-all duration-300 shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:scale-105 active:scale-95">
           <i data-lucide="message-square" class="w-4 h-4"></i>
           <span>Personal Discord</span>
         </a>
         <a href="#projects" 
-           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/80 font-semibold text-sm transition-all duration-200 hover:scale-105 active:scale-95">
-          <i data-lucide="rocket" class="w-4 h-4 text-cyan-400"></i>
-          <span>View My Projects</span>
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#091730] hover:bg-[#0d2247] text-slate-200 border border-cyan-500/30 font-semibold text-sm transition-all duration-300 hover:scale-105 active:scale-95">
+          <i data-lucide="sparkles" class="w-4 h-4 text-cyan-400"></i>
+          <span>Explore Projects</span>
         </a>
       </div>
     </header>
 
-    <!-- FEATURED PROJECTS SECTION -->
+    <!-- FEATURED PROJECTS -->
     <section id="projects" class="space-y-6">
       <div class="flex items-center gap-3 px-2">
-        <i data-lucide="sparkles" class="w-6 h-6 text-cyan-400 animate-spin" style="animation-duration: 9s;"></i>
+        <i data-lucide="orbit" class="w-6 h-6 text-cyan-400 animate-spin" style="animation-duration: 12s;"></i>
         <h2 class="text-2xl font-bold text-white tracking-wide">Featured Projects</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         <!-- PROJECT 1: SPARK BOT -->
-        <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
+        <div class="glow-border-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between gap-2 mb-4">
-              <span class="text-xs uppercase font-extrabold tracking-widest px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+              <span class="text-xs uppercase font-extrabold tracking-widest px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
                 Premium All-In-One Bot
               </span>
-              <span class="text-xs text-blue-400 font-mono">CEO & Creator</span>
+              <span class="text-xs text-blue-400 font-mono">Developer & CEO</span>
             </div>
 
             <div class="flex items-center gap-4 mb-4">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-600/30 group-hover:scale-110 transition-transform">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] group-hover:scale-110 transition-transform">
                 <i data-lucide="bot" class="w-7 h-7"></i>
               </div>
               <div>
                 <h3 class="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">Spark Bot</h3>
-                <p class="text-xs text-slate-400">All-in-One Discord Management & Utility</p>
+                <p class="text-xs text-slate-400">Multi-purpose Community & Utility Bot</p>
               </div>
             </div>
 
             <p class="text-sm text-slate-300 leading-relaxed mb-4">
-              A feature-rich Discord bot designed to empower communities with moderation, economy, leveling, protection, and customized entertainment tools.
+              A complete all-in-one Discord bot powering communities with intelligent moderation, active economy system, security tools, and 24/7 reliability.
             </p>
 
             <div class="flex flex-wrap gap-2 mb-6">
-              <span class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700">Moderation</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700">Economy</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700">Utility</span>
-              <span class="text-[11px] px-2.5 py-1 rounded-md bg-slate-800/80 text-slate-300 border border-slate-700">24/7 Uptime</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-[#07152d] text-cyan-300 border border-blue-500/30">All-in-One</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-[#07152d] text-cyan-300 border border-blue-500/30">Auto-Mod</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-[#07152d] text-cyan-300 border border-blue-500/30">Economy</span>
+              <span class="text-[11px] px-2.5 py-1 rounded-md bg-[#07152d] text-cyan-300 border border-blue-500/30">Music & Utilities</span>
             </div>
           </div>
 
           <div class="flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-slate-800/80">
             <a href="https://discord.com/oauth2/authorize?client_id=1539868740768763975" target="_blank" rel="noopener noreferrer" 
-               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all shadow-md hover:scale-105 active:scale-95">
+               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:scale-105 active:scale-95">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span>Invite Spark Bot</span>
+              <span>Invite Spark</span>
             </a>
             <a href="https://discord.gg/h5ejJAabPv" target="_blank" rel="noopener noreferrer" 
-               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all hover:scale-105 active:scale-95">
+               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#091730] hover:bg-[#0f254e] text-slate-200 text-xs font-semibold border border-slate-700 transition-all hover:scale-105 active:scale-95">
               <i data-lucide="message-circle" class="w-4 h-4 text-indigo-400"></i>
               <span>Support Server</span>
             </a>
           </div>
         </div>
 
-        <!-- PROJECT 2: SPARKLEMC MINECRAFT SERVER -->
-        <div class="glass-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group">
+        <!-- PROJECT 2: SPARKLEMC MINECRAFT -->
+        <div class="glow-border-card rounded-3xl p-6 sm:p-7 flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between gap-2 mb-4">
-              <span class="text-xs uppercase font-extrabold tracking-widest px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-                Public SMP Server
+              <span class="text-xs uppercase font-extrabold tracking-widest px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]">
+                Public Minecraft Server
               </span>
-              <span class="text-xs text-indigo-400 font-mono">Founder & Owner</span>
+              <span class="text-xs text-cyan-400 font-mono">Owner & Founder</span>
             </div>
 
             <div class="flex items-center gap-4 mb-4">
-              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 group-hover:scale-110 transition-transform">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-[0_0_20px_rgba(79,70,229,0.4)] group-hover:scale-110 transition-transform">
                 <i data-lucide="gamepad-2" class="w-7 h-7"></i>
               </div>
               <div>
-                <h3 class="text-2xl font-bold text-white group-hover:text-indigo-300 transition-colors">SparkleMC</h3>
-                <p class="text-xs text-slate-400">Competitive & Custom Survival SMP</p>
+                <h3 class="text-2xl font-bold text-white group-hover:text-cyan-300 transition-colors">SparkleMC</h3>
+                <p class="text-xs text-slate-400">Survival SMP & Crossplay Network</p>
               </div>
             </div>
 
             <p class="text-sm text-slate-300 leading-relaxed mb-4">
-              A custom Minecraft community server offering smooth gameplay, active events, custom economies, and friendly multiplayer survival.
+              A lag-free, custom-featured Minecraft SMP with player-driven markets, custom events, and seamless Java + Bedrock crossplay.
             </p>
 
-            <!-- IP & PORT BOX -->
-            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-indigo-500/30 space-y-2 mb-6">
+            <!-- IP and Port Box -->
+            <div class="p-3.5 rounded-xl bg-[#050e1f] border border-cyan-500/30 space-y-2 mb-6 shadow-inner">
               <div class="flex items-center justify-between text-xs">
-                <span class="text-slate-400">Server IP:</span>
+                <span class="text-slate-400">Java / Bedrock IP:</span>
                 <div class="flex items-center gap-2">
                   <span class="font-mono text-cyan-300 font-bold select-all">play.sparklemc.fun</span>
-                  <button onclick="copyToClipboard('play.sparklemc.fun', 'Server IP copied!')" class="text-slate-400 hover:text-white" title="Copy IP">
+                  <button onclick="copyText('play.sparklemc.fun', 'Server IP copied!')" class="text-slate-400 hover:text-white" title="Copy IP">
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
               </div>
-              <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-800">
+              <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-800/80">
                 <span class="text-slate-400">Bedrock Port:</span>
                 <div class="flex items-center gap-2">
                   <span class="font-mono text-slate-200 select-all">19133</span>
-                  <button onclick="copyToClipboard('19133', 'Port copied!')" class="text-slate-400 hover:text-white" title="Copy Port">
+                  <button onclick="copyText('19133', 'Port copied!')" class="text-slate-400 hover:text-white" title="Copy Port">
                     <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
@@ -185,12 +188,12 @@
 
           <div class="flex flex-col sm:flex-row gap-2.5 pt-4 border-t border-slate-800/80">
             <a href="https://www.sparklemc.fun" target="_blank" rel="noopener noreferrer" 
-               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all shadow-md hover:scale-105 active:scale-95">
+               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition-all shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:scale-105 active:scale-95">
               <i data-lucide="globe" class="w-4 h-4"></i>
               <span>Official Website</span>
             </a>
             <a href="https://discord.gg/62xxMq2NKv" target="_blank" rel="noopener noreferrer" 
-               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all hover:scale-105 active:scale-95">
+               class="flex-1 inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#091730] hover:bg-[#0f254e] text-slate-200 text-xs font-semibold border border-slate-700 transition-all hover:scale-105 active:scale-95">
               <i data-lucide="message-square" class="w-4 h-4 text-indigo-400"></i>
               <span>Minecraft Discord</span>
             </a>
@@ -200,29 +203,29 @@
       </div>
     </section>
 
-    <!-- SOCIALS & PLATFORMS -->
+    <!-- SOCIALS AND PLATFORMS -->
     <section class="space-y-4">
       <div class="flex items-center gap-3 px-2">
         <i data-lucide="share-2" class="w-5 h-5 text-cyan-400"></i>
-        <h2 class="text-xl font-bold text-white tracking-wide">Socials & Communities</h2>
+        <h2 class="text-xl font-bold text-white tracking-wide">Socials & Networks</h2>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
 
         <!-- Personal Discord -->
         <a href="https://discord.gg/5SjbYGKBG7" target="_blank" rel="noopener noreferrer" 
-           class="glass-card rounded-2xl p-4 flex flex-col justify-between group">
+           class="glow-border-card rounded-2xl p-4 flex flex-col justify-between group">
           <div class="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-3 group-hover:scale-110 transition-transform">
             <i data-lucide="message-square" class="w-5 h-5"></i>
           </div>
           <div>
             <h3 class="font-semibold text-white group-hover:text-cyan-300 text-sm">Personal Discord</h3>
-            <p class="text-[11px] text-slate-400">Community & Hangout</p>
+            <p class="text-[11px] text-slate-400">Join Community Hub</p>
           </div>
         </a>
 
         <!-- YouTube (Coming Soon) -->
-        <div class="glass-card rounded-2xl p-4 flex flex-col justify-between opacity-85">
+        <div class="glow-border-card rounded-2xl p-4 flex flex-col justify-between opacity-85">
           <div class="flex items-center justify-between mb-3">
             <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-400">
               <i data-lucide="youtube" class="w-5 h-5"></i>
@@ -231,25 +234,25 @@
           </div>
           <div>
             <h3 class="font-semibold text-white text-sm">YouTube</h3>
-            <p class="text-[11px] text-slate-400">Gaming & Tutorials</p>
+            <p class="text-[11px] text-slate-400">Coming Soon</p>
           </div>
         </div>
 
         <!-- GitHub -->
         <a href="https://github.com/fzboy2008-ui" target="_blank" rel="noopener noreferrer" 
-           class="glass-card rounded-2xl p-4 flex flex-col justify-between group">
+           class="glow-border-card rounded-2xl p-4 flex flex-col justify-between group">
           <div class="w-10 h-10 rounded-xl bg-slate-700/30 border border-slate-600/40 flex items-center justify-center text-slate-300 mb-3 group-hover:scale-110 transition-transform">
             <i data-lucide="github" class="w-5 h-5"></i>
           </div>
           <div>
-            <h3 class="font-semibold text-white group-hover:text-cyan-300 text-sm">GitHub Profile</h3>
+            <h3 class="font-semibold text-white group-hover:text-cyan-300 text-sm">GitHub</h3>
             <p class="text-[11px] text-slate-400">@fzboy2008-ui</p>
           </div>
         </a>
 
-        <!-- Minecraft Network Website -->
+        <!-- SparkleMC Website -->
         <a href="https://www.sparklemc.fun" target="_blank" rel="noopener noreferrer" 
-           class="glass-card rounded-2xl p-4 flex flex-col justify-between group">
+           class="glow-border-card rounded-2xl p-4 flex flex-col justify-between group">
           <div class="w-10 h-10 rounded-xl bg-cyan-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-110 transition-transform">
             <i data-lucide="globe" class="w-5 h-5"></i>
           </div>
@@ -263,26 +266,26 @@
     </section>
 
     <!-- CONTACT / EMAIL CARD -->
-    <section class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 border-cyan-500/30">
+    <section class="glow-border-card rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-4 text-center sm:text-left">
         <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center text-cyan-400 flex-shrink-0">
           <i data-lucide="mail" class="w-6 h-6"></i>
         </div>
         <div>
-          <h3 class="text-lg font-bold text-white">Direct Communication</h3>
-          <p class="text-sm text-slate-400">Contact directly via official mail:</p>
+          <h3 class="text-lg font-bold text-white">Direct Email Inquiries</h3>
+          <p class="text-sm text-slate-400">Feel free to contact me directly:</p>
           <span class="text-xs sm:text-sm text-cyan-300 font-mono select-all">fzboy2008@gmail.com</span>
         </div>
       </div>
       
       <div class="flex items-center gap-3">
-        <button onclick="copyToClipboard('fzboy2008@gmail.com', 'Email copied!')" 
-                class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-xs sm:text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
+        <button onclick="copyText('fzboy2008@gmail.com', 'Email copied!')" 
+                class="px-4 py-2.5 rounded-xl bg-[#091730] hover:bg-[#0f254e] text-slate-200 border border-slate-700 font-medium text-xs sm:text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
           <i data-lucide="copy" class="w-4 h-4"></i>
           <span>Copy Email</span>
         </button>
         <a href="mailto:fzboy2008@gmail.com" 
-           class="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs sm:text-sm transition-all hover:scale-105 active:scale-95 shadow-md shadow-cyan-600/30 flex items-center gap-2">
+           class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs sm:text-sm transition-all hover:scale-105 active:scale-95 shadow-[0_0_15px_rgba(6,182,212,0.4)] flex items-center gap-2">
           <i data-lucide="send" class="w-4 h-4"></i>
           <span>Send Mail</span>
         </a>
@@ -291,13 +294,13 @@
 
     <!-- FOOTER -->
     <footer class="text-center text-xs text-slate-500 pt-4 pb-8 space-y-1">
-      <p>© <span id="year"></span> <span class="text-slate-300 font-semibold">FZ BOY</span> • All rights reserved.</p>
-      <p class="text-[11px] text-slate-600">Powered by Cyber-Space Warp Engine • GitHub Pages</p>
+      <p>© <span id="year"></span> <span class="text-slate-300 font-semibold">FZBOY</span> • All rights reserved.</p>
+      <p class="text-[11px] text-slate-600">Galaxy Gradient Interface • Hosted on GitHub Pages</p>
     </footer>
 
   </main>
 
+  <!-- Custom Scripts -->
   <script src="script.js"></script>
 </body>
-      </html>
-      
+</html>
